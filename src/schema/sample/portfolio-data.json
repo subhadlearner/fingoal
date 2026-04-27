@@ -1,0 +1,1419 @@
+{
+  "schema_owner": "Subhadeep Majumder",
+  "schema_name": "portfolio_schema",
+  "schema_version": "1.1",
+  "metadata": {
+    "ltcg_percentage": "0.125",
+    "ltcg_exemption_limit": "100000",
+    "stcg_percentage": "0.2",
+    "cess_percentage": "0.04",
+    "inflation_rate": "0.06",
+    "currency": "INR"
+  },
+  "data_constraints": {
+    "instrument_types": [
+      "Mutual Fund",
+      "Government Scheme",
+      "ETF",
+      "Stock Option",
+      "Fixed Deposit",
+      "Savings Account"
+    ],
+    "instrument_statuses": [
+      "Active",
+      "Paused",
+      "Stopped"
+    ],
+    "asset_types": [
+      "Equity",
+      "Debt",
+      "Hybrid",
+      "Gold"
+    ],
+    "asset_sub_types": [
+      "Equity India",
+      "Equity US",
+      "Equity International except US",
+      "Debt Government",
+      "Debt Corporate",
+      "Debt SavingsAccount",
+      "Debt FixedDeposit",
+      "Hybrid India",
+      "Gold"
+    ],
+    "frequencies": [
+      "Monthly",
+      "Annualy",
+      "Not Applicable"
+    ],
+    "step_up_types": [
+      "SalaryLinked",
+      "Manual",
+      "AutomaticYoY",
+      "Not Applicable"
+    ]
+  },
+  "attribute_definitions": {
+    "portfolio_id": {
+      "data_type": "String",
+      "description": "Primary Key for database. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "user_id": {
+      "data_type": "String",
+      "description": "Foreign Key for database linking to user. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "portfolio_name": {
+      "Label": "Portfolio Name",
+      "data_type": "String",
+      "description": "Name of the portfolio for example - My Portfolio, Retirement Portfolio, etc.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "portfolio_current_corpus": {
+      "Label": "Current Corpus of the Portfolio",
+      "data_type": "Float",
+      "description": "Current total corpus of the portfolio based on the corpus added by the user for each instrument. This should be system calculated based on the sum of ytd corpus for all instruments in the portfolio.",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "portfolio_current_equity_allocation": {
+      "Label": "Current Equity Allocation for the Portfolio",
+      "data_type": "Float",
+      "description": "Current percentage of equity allocation for the portfolio based on the corpus added by the user for each instrument and their asset type. This should be system calculated based on the sum of ytd corpus for all equity instruments in the portfolio divided by the total portfolio corpus.",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "portfolio_current_debt_allocation": {
+      "Label": "Current Debt Allocation for the Portfolio",
+      "data_type": "Float",
+      "description": "Current percentage of debt allocation for the portfolio based on the corpus added by the user for each instrument and their asset type. This should be system calculated based on the sum of ytd corpus for all debt instruments in the portfolio divided by the total portfolio corpus.",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "portfolio_current_gold_allocation": {
+      "Label": "Current Gold Allocation for the Portfolio",
+      "data_type": "Float",
+      "description": "Current percentage of gold allocation for the portfolio based on the corpus added by the user for each instrument and their asset type. This should be system calculated based on the sum of ytd corpus for all gold instruments in the portfolio divided by the total portfolio corpus.",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "portfolio_description": {
+      "Label": "Describe your Portfolio",
+      "data_type": "String",
+      "length": "500",
+      "description": "Description of the portfolio which can include details about the portfolio strategy, risk profile, etc.",
+      "source": "USER_INPUT"
+    },
+    "goal_id": {
+      "data_type": "String",
+      "description": "Primary Key for database. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "goal_name": {
+      "Label": "Goal Name",
+      "data_type": "String",
+      "description": "Name of the financial goal for example - Retirement, Child's Education, etc.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "target_year": {
+      "Label": "Which year to Achieve the Goal?",
+      "data_type": "Integer",
+      "description": "Target year for the financial goal which will be used to calculate the time horizon for investments",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "target_corpus": {
+      "Label": "Corpus Required at Target Year?",
+      "data_type": "Float",
+      "description": "Target corpus for the financial goal at the target year",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "goal_expected_equity_allocation": {
+      "Label": "Expected Equity Allocation for the Goal?",
+      "data_type": "Float",
+      "description": "Expected percentage of equity allocation for the financial goal",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "goal_expected_debt_allocation": {
+      "Label": "Expected Debt Allocation for the Goal?",
+      "data_type": "Float",
+      "description": "Expected percentage of debt allocation for the financial goal",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "goal_expected_gold_allocation": {
+      "Label": "Expected Gold Allocation for the Goal?",
+      "data_type": "Float",
+      "description": "Expected percentage of gold allocation for the financial goal",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "goal_current_equity_allocation": {
+      "Label": "Current Equity Allocation for the Goal?",
+      "data_type": "Float",
+      "description": "Current percentage of equity allocation for the financial goal based on the corpus added by the user",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "goal_current_debt_allocation": {
+      "Label": "Current Debt Allocation for the Goal?",
+      "data_type": "Float",
+      "description": "Current percentage of debt allocation for the financial goal based on the corpus added by the user",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "goal_current_gold_allocation": {
+      "Label": "Current Gold Allocation for the Goal?",
+      "data_type": "Float",
+      "description": "Current percentage of gold allocation for the financial goal based on the corpus added by the user",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "instrument_id": {
+      "data_type": "String",
+      "description": "Primary Key for database. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "instrument_name": {
+      "Label": "Instrument Name",
+      "data_type": "String",
+      "description": "Name of the financial instrument for example - HDFC Nifty 50 Index Fund",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "instrument_type": {
+      "Label": "Instrument Type",
+      "data_type": "Enum",
+      "description": "Type of the financial instrument for example - Mutual Fund",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.instrument_types"
+    },
+    "instrument_status": {
+      "Label": "Instrument Status",
+      "data_type": "Enum",
+      "description": "Status of the financial instrument for example - Active, Paused, Stopped. This can be used to exclude certain investments from calculations without deleting them",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.instrument_statuses"
+    },
+    "fund_category": {
+      "Label": "Fund Category",
+      "data_type": "String",
+      "description": "Visible only for mutual funds instrument type, can be used for categorization, benchmarking and filtering",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "asset_type": {
+      "Label": "Asset Category",
+      "data_type": "Enum",
+      "description": "Asset type of the financial instrument for example - Equity, Debt, Hybrid, Gold. Incase of Hybrid, should ask the Equity/Debt percentage split. This can be used for asset allocation, benchmarking and filtering",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.asset_types"
+    },
+    "asset_sub_type": {
+      "Label": "Asset Sub-Category",
+      "data_type": "Enum",
+      "description": "Asset sub-type of the financial instrument for example - Equity India, Equity US, Debt Government, Debt Corporate, Hybrid, Gold etc. This can be used for asset allocation, benchmarking and filtering",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.asset_sub_types"
+    },
+    "frequency": {
+      "Label": "Frequency",
+      "data_type": "Enum",
+      "description": "Frequency of the financial instrument for example - Monthly, Annually. This can be used for future forecasting, asset allocation, benchmarking and filtering.",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.frequencies"
+    },
+    "start_date": {
+      "Label": "Start Date",
+      "data_type": "DateTime",
+      "description": "Start date of the investment in the financial instrument.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "end_date": {
+      "Label": "End Date",
+      "data_type": "DateTime",
+      "description": "Possible End date of the investment in the financial instrument.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "expected_roi": {
+      "Label": "Expected ROI",
+      "data_type": "Float",
+      "description": "Expected rate of return for the financial instrument which can be used for forecasting. This can be a user input or system calculated based on historical returns or benchmarks. For example, for mutual funds we can calculate this based on 3/5/10 year CAGR or based on category benchmark returns.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED",
+      "default": 0.12
+    },
+    "expected_corpus": {
+      "Label": "Projected Wealth",
+      "data_type": "Float",
+      "description": "Expected corpus from the financial instrument at the end date based on the expected ROI and the schedule of investments. This should be system calculated based on the formula - FV(roi, time, payments, pv)",
+      "source": "SYSTEM_CALCULATED",
+      "formula": "FV(roi, time, payments, pv)"
+    },
+    "ytd_corpus": {
+      "Label": "Current Wealth YTD",
+      "data_type": "Float",
+      "source": "USER_INPUT",
+      "description": "User enters current corpus for manual tracking of the instrument.",
+      "validation": "REQUIRED"
+    },
+    "step_up_type": {
+      "Label": "Step-Up Type",
+      "data_type": "Enum",
+      "description": "Type of step-up for the financial instrument for example - SalaryLinked, Manual, AutomaticYoY and Not Applicable.",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.step_up_types"
+    },
+    "step_up_percentage": {
+      "Label": "Step-Up Percentage for Automatic YoY",
+      "data_type": "Float",
+      "description": "Percentage increase for each step-up for Automatic YoY step-up type only. The system will calculate the amount based on the previous step-up amount and this percentage increase.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED_IF step_up_type is AutomaticYoY"
+    },
+    "instrument_start_amount": {
+      "Label": "Initial Investment Amount",
+      "data_type": "Float",
+      "description": "Initial investment amount for the financial instrument which will be used as the base amount for calculating step-ups.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "schedule": {
+      "data_type": "object",
+      "description": "Schedule of step-ups for the financial instrument for these step up types: For Not Applicable, the step-up will not be applicable. For Manual, user will input the amount and the date for each step-up and can change it later. For AutomaticYoY, user will input the percentage increase for each step-up and the system will calculate the amount based on the previous step-up amount. For SalaryLinked, the step-up will be linked to the user's salary growth which can be calculated based on probable future salary growth and will be calculated automatically.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "schedule_id": {
+      "data_type": "String",
+      "description": "Primary Key for database. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "schedule_name": {
+      "Label": "Schedule Name",
+      "data_type": "String",
+      "description": "Name of the step-up schedule for example - Initial Investment, First Step-Up, etc.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "date": {
+      "Label": "Step-Up Date",
+      "data_type": "DateTime",
+      "description": "Date of the step-up for the financial instrument. Only visible for Manual step-up types.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "amount": {
+      "Label": "Step-Up Amount",
+      "data_type": "Float",
+      "description": "Amount of the step-up for the financial instrument. Only visible for Manual step-up types.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "goal_tax_liability": {
+      "Label": "Estimated Tax Liability on Goal on End Date",
+      "data_type": "Float",
+      "description": "Estimated tax liability for the financial goal at the target year based on the expected corpus and the applicable tax rates. This should be system calculated based on the formula - Tax = (STCG * stcg_percentage) + (LTCG * ltcg_percentage) + (Cess * cess_percentage)",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "instrument_tax_liability": {
+      "Label": "Estimated Tax Liability on Instrument on End Date",
+      "data_type": "Float",
+      "description": "Estimated tax liability for the financial instrument at the end date based on the expected corpus and the applicable tax rates. This should be system calculated based on the formula - Tax = (STCG * stcg_percentage) + (LTCG * ltcg_percentage) + (Cess * cess_percentage)",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "instrument_tax_liability_now": {
+      "Label": "Current Tax Liability if Redeemed Today on Instrument",
+      "data_type": "Float",
+      "description": "Estimated tax liability for the financial instrument today based on the ytd corpus and the investment amount on the instrument following applicable tax rates. This should be system calculated based on the formula - Tax = (STCG * stcg_percentage) + (LTCG * ltcg_percentage) + (Cess * cess_percentage)",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "hybrid_allocation": {
+      "data_type": "object",
+      "description": "Allocation details for hybrid instruments to calculate the asset allocation, expected returns and tax liability accurately. This should include the percentage allocation to equity, debt and gold for hybrid instruments.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "hybrid_allocation_id": {
+      "data_type": "String",
+      "description": "Primary Key for database. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "allocation_type": {
+      "Label": "Allocation Type",
+      "data_type": "Enum",
+      "description": "Type of allocation for hybrid instruments for example - Equity India, Debt Government, etc. This can be used for asset allocation, benchmarking and filtering.",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.asset_sub_types"
+    },
+    "allocation_percentage": {
+      "Label": "Allocation Percentage",
+      "data_type": "Float",
+      "description": "Percentage allocation for the allocation type in hybrid instruments. The sum of all allocation percentages for a hybrid instrument should be 100%.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    }
+  },
+  "portfolio_data": [
+    {
+      "portfolio_id": "portfolio_1",
+      "user_id": "user_1",
+      "portfolio_name": "My Portfolio",
+      "portfolio_current_corpus": 150000000,
+      "portfolio_current_equity_allocation": 0.0,
+      "portfolio_current_debt_allocation": 0.0,
+      "portfolio_current_gold_allocation": 0.0,
+      "portfolio_description": "This is where the actual data would sit, following the rules above.",
+      "goals": [
+        {
+          "portfolio_id": "portfolio_1",
+          "goal_id": "goal_0",
+          "goal_name": "Create Emergency Fund",
+          "target_corpus": 0,
+          "target_year": 0,
+          "goal_expected_equity_allocation": 0.0,
+          "goal_expected_debt_allocation": 0.0,
+          "goal_expected_gold_allocation": 0.0,
+          "goal_current_equity_allocation": 0.0,
+          "goal_current_debt_allocation": 0.0,
+          "goal_current_gold_allocation": 0.0,
+          "goal_tax_liability": 0.0,
+          "investments": [
+            {
+              "goal_id": "goal_0",
+              "instrument_id": "instrument_1",
+              "instrument_name": "SBI Savings Account",
+              "instrument_type": "Savings Account",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "",
+              "asset_type": "Debt",
+              "asset_sub_type": "Debt Government",
+              "frequency": "Not Applicable",
+              "start_date": "0000-00-00",
+              "end_date": "0000-00-00",
+              "expected_roi": 0.0025,
+              "expected_corpus": 0,
+              "ytd_corpus": 300000,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 0
+            },
+            {
+              "goal_id": "goal_0",
+              "instrument_id": "instrument_2",
+              "instrument_name": "HDFC Savings Joint Account",
+              "instrument_type": "Savings Account",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "",
+              "asset_type": "Debt",
+              "asset_sub_type": "Debt Government",
+              "frequency": "Not Applicable",
+              "start_date": "0000-00-00",
+              "end_date": "0000-00-00",
+              "expected_roi": 0.0025,
+              "expected_corpus": 0,
+              "ytd_corpus": 200000,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 0
+            },
+            {
+              "goal_id": "goal_0",
+              "instrument_id": "instrument_3",
+              "instrument_name": "Quantum Liquid Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "",
+              "asset_type": "Debt",
+              "asset_sub_type": "Debt Government",
+              "frequency": "Not Applicable",
+              "start_date": "0000-00-00",
+              "end_date": "0000-00-00",
+              "expected_roi": 0.0025,
+              "expected_corpus": 0,
+              "ytd_corpus": 119000,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 0
+            }
+          ]
+        },
+        {
+          "portfolio_id": "portfolio_1",
+          "goal_id": "goal_1",
+          "goal_name": "Child Graduation Fund",
+          "target_corpus": 8500000,
+          "target_year": 2037,
+          "goal_expected_equity_allocation": 0.0,
+          "goal_expected_debt_allocation": 0.0,
+          "goal_expected_gold_allocation": 0.0,
+          "goal_current_equity_allocation": 0.0,
+          "goal_current_debt_allocation": 0.0,
+          "goal_current_gold_allocation": 0.0,
+          "goal_tax_liability": 0.0,
+          "investments": [
+            {
+              "goal_id": "goal_1",
+              "instrument_id": "instrument_1",
+              "instrument_name": "Axis Growth Opportunity Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large and Mid Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2022-05-06",
+              "end_date": "2037-05-06",
+              "expected_roi": 0.12,
+              "expected_corpus": 6424006,
+              "ytd_corpus": 886102,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 14000
+            },
+            {
+              "goal_id": "goal_1",
+              "instrument_id": "instrument_2",
+              "instrument_name": "Public Provident Fund (PPF)",
+              "instrument_type": "Government Scheme",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "asset_type": "Debt",
+              "asset_sub_type": "Debt Government",
+              "frequency": "Annually",
+              "start_date": "2022-04-01",
+              "end_date": "2036-04-01",
+              "expected_roi": 0.071,
+              "expected_corpus": 2866222,
+              "ytd_corpus": 572423,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 114000
+            }
+          ]
+        },
+        {
+          "portfolio_id": "portfolio_1",
+          "goal_id": "goal_2",
+          "goal_name": "Child PG Fund",
+          "target_corpus": 10287038,
+          "target_year": 2041,
+          "goal_expected_equity_allocation": 0.0,
+          "goal_expected_debt_allocation": 0.0,
+          "goal_expected_gold_allocation": 0.0,
+          "goal_current_equity_allocation": 0.0,
+          "goal_current_debt_allocation": 0.0,
+          "goal_current_gold_allocation": 0.0,
+          "goal_tax_liability": 0.0,
+          "investments": [
+            {
+              "goal_id": "goal_2",
+              "instrument_id": "instrument_3",
+              "instrument_name": "Canara Robeco Flexicap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Flexicap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2022-05-07",
+              "end_date": "2041-05-07",
+              "expected_roi": 0.12,
+              "expected_corpus": 8101281,
+              "ytd_corpus": 634306,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 10500
+            },
+            {
+              "goal_id": "goal_2",
+              "instrument_id": "instrument_4",
+              "instrument_name": "Sukanya Samridhi Yojana (SSY)",
+              "instrument_type": "Government Scheme",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "asset_type": "Debt",
+              "asset_sub_type": "Debt Government",
+              "frequency": "Annually",
+              "start_date": "2022-04-01",
+              "end_date": "2036-04-01",
+              "expected_roi": 0.082,
+              "expected_corpus": 3285596,
+              "ytd_corpus": 428723,
+              "step_up_type": "Not Applicable",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 84000
+            }
+          ]
+        },
+        {
+          "portfolio_id": "portfolio_1",
+          "goal_id": "goal_3",
+          "goal_name": "Retirement & Child Marriage",
+          "target_corpus": 120000000,
+          "target_year": 2044,
+          "goal_expected_equity_allocation": 0.0,
+          "goal_expected_debt_allocation": 0.0,
+          "goal_expected_gold_allocation": 0.0,
+          "goal_current_equity_allocation": 0.0,
+          "goal_current_debt_allocation": 0.0,
+          "goal_current_gold_allocation": 0.0,
+          "goal_tax_liability": 0.0,
+          "investments": [
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_5",
+              "instrument_name": "HDFC Nifty 50 Index Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2022-01-13",
+              "end_date": "2044-12-13",
+              "expected_roi": 0.11,
+              "expected_corpus": 13323367,
+              "ytd_corpus": 533380,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 8093,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_5",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2022-01-13",
+                  "amount": 8093
+                },
+                {
+                  "schedule_id": "schedule_6",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-04-13",
+                  "amount": 10500
+                },
+                {
+                  "schedule_id": "schedule_7",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-04-13",
+                  "amount": 15000
+                },
+                {
+                  "schedule_id": "schedule_8",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2037-04-13",
+                  "amount": 18500
+                },
+                {
+                  "schedule_id": "schedule_9",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2042-04-13",
+                  "amount": 26000
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_6",
+              "instrument_name": "UTI Nifty Next 50 index fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2022-01-13",
+              "end_date": "2044-12-13",
+              "expected_roi": 0.12,
+              "expected_corpus": 9162309,
+              "ytd_corpus": 434782,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 5780,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_10",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2022-01-13",
+                  "amount": 5780
+                },
+                {
+                  "schedule_id": "schedule_11",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-04-13",
+                  "amount": 7000
+                },
+                {
+                  "schedule_id": "schedule_12",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-04-13",
+                  "amount": 10000
+                },
+                {
+                  "schedule_id": "schedule_13",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2037-04-13",
+                  "amount": 12500
+                },
+                {
+                  "schedule_id": "schedule_14",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2042-04-13",
+                  "amount": 17500
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_7",
+              "instrument_name": "Parag Parikh Flexi Cap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2022-01-10",
+              "end_date": "2044-12-10",
+              "expected_roi": 0.12,
+              "expected_corpus": 16795103,
+              "ytd_corpus": 700200,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 9249,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_15",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2022-01-10",
+                  "amount": 9249
+                },
+                {
+                  "schedule_id": "schedule_16",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-04-10",
+                  "amount": 14000
+                },
+                {
+                  "schedule_id": "schedule_17",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-04-10",
+                  "amount": 20000
+                },
+                {
+                  "schedule_id": "schedule_18",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2037-04-10",
+                  "amount": 25000
+                },
+                {
+                  "schedule_id": "schedule_19",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2042-04-10",
+                  "amount": 35000
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_8",
+              "instrument_name": "HDFC Mid Cap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Mid Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2026-04-26",
+              "end_date": "2044-12-26",
+              "expected_roi": 0.12,
+              "expected_corpus": 8157790,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 5500,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_20",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2026-04-29",
+                  "amount": 5500
+                },
+                {
+                  "schedule_id": "schedule_21",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-04-29",
+                  "amount": 10500
+                },
+                {
+                  "schedule_id": "schedule_22",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-05-29",
+                  "amount": 15000
+                },
+                {
+                  "schedule_id": "schedule_23",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2037-05-29",
+                  "amount": 19000
+                },
+                {
+                  "schedule_id": "schedule_24",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2042-05-29",
+                  "amount": 26500
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_9",
+              "instrument_name": "Edelweiss Small Cap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Small Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2026-05-27",
+              "end_date": "2044-12-27",
+              "expected_roi": 0.12,
+              "expected_corpus": 8236686,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 10000,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_25",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2026-05-27",
+                  "amount": 10000
+                },
+                {
+                  "schedule_id": "schedule_26",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-04-27",
+                  "amount": 10500
+                },
+                {
+                  "schedule_id": "schedule_27",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-04-27",
+                  "amount": 15000
+                },
+                {
+                  "schedule_id": "schedule_28",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2037-04-27",
+                  "amount": 19000
+                },
+                {
+                  "schedule_id": "schedule_29",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2042-04-27",
+                  "amount": 26500
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_10",
+              "instrument_name": "NASDAQ 100 UCITS ETF",
+              "instrument_type": "ETF",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity US",
+              "frequency": "Annually",
+              "start_date": "2026-12-03",
+              "end_date": "2044-12-03",
+              "expected_roi": 0.12,
+              "expected_corpus": 8051251,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 60000,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_20",
+                  "schedule_name": "Initial Investment every year",
+                  "date": "2022-12-03",
+                  "amount": 60000
+                },
+                {
+                  "schedule_id": "schedule_21",
+                  "schedule_name": "Step-up Investment every year",
+                  "date": "2028-04-03",
+                  "amount": 126000
+                },
+                {
+                  "schedule_id": "schedule_22",
+                  "schedule_name": "Step-up Investment every year",
+                  "date": "2032-04-03",
+                  "amount": 180000
+                },
+                {
+                  "schedule_id": "schedule_23",
+                  "schedule_name": "Step-up Investment every year",
+                  "date": "2037-04-03",
+                  "amount": 222000
+                },
+                {
+                  "schedule_id": "schedule_24",
+                  "schedule_name": "Step-up Investment every year",
+                  "date": "2042-04-03",
+                  "amount": 312000
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_11",
+              "instrument_name": "WESOP",
+              "instrument_type": "Stock Option",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity International except US",
+              "frequency": "Annually",
+              "start_date": "2025-12-24",
+              "end_date": "2044-12-24",
+              "expected_roi": 0.11,
+              "expected_corpus": 6945079,
+              "ytd_corpus": 288034,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 93090,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_25",
+                  "schedule_name": "Initial WESOP Investment",
+                  "date": "2025-12-24",
+                  "amount": 93090
+                },
+                {
+                  "schedule_id": "schedule_26",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2028-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_27",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2029-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_28",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2030-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_29",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2031-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_30",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2032-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_31",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2033-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_32",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2034-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_33",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2035-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_34",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2036-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_35",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2037-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_36",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2038-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_37",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2039-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_38",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2040-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_39",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2041-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_40",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2042-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_41",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2043-12-24",
+                  "amount": 150000
+                },
+                {
+                  "schedule_id": "schedule_42",
+                  "schedule_name": "Step-up WESOP Investment",
+                  "date": "2044-12-24",
+                  "amount": 150000
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_12",
+              "instrument_name": "Nippon Gold BeEs ETF",
+              "instrument_type": "ETF",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Gold",
+              "asset_type": "Gold",
+              "asset_sub_type": "",
+              "frequency": "Monthly",
+              "start_date": "2026-12-05",
+              "end_date": "2044-12-05",
+              "expected_roi": 0.11,
+              "expected_corpus": 5437936,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 5000,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_43",
+                  "schedule_name": "Initial Gold Investment",
+                  "date": "2022-12-05",
+                  "amount": 5000
+                },
+                {
+                  "schedule_id": "schedule_44",
+                  "schedule_name": "Step-up gold Investment",
+                  "date": "2028-04-05",
+                  "amount": 7000
+                },
+                {
+                  "schedule_id": "schedule_45",
+                  "schedule_name": "Step-up gold Investment",
+                  "date": "2032-04-05",
+                  "amount": 10000
+                },
+                {
+                  "schedule_id": "schedule_46",
+                  "schedule_name": "Step-up gold Investment",
+                  "date": "2037-04-05",
+                  "amount": 12500
+                },
+                {
+                  "schedule_id": "schedule_47",
+                  "schedule_name": "Step-up gold Investment",
+                  "date": "2042-04-05",
+                  "amount": 17500
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_13",
+              "instrument_name": "Employee Provident Fund (EPF)",
+              "instrument_type": "Government Scheme",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "asset_type": "Debt",
+              "asset_sub_type": "Debt Government",
+              "frequency": "Monthly",
+              "start_date": "2022-04-01",
+              "end_date": "2044-12-01",
+              "expected_roi": 0.085,
+              "expected_corpus": 40887143,
+              "ytd_corpus": 3257959,
+              "step_up_type": "SalaryLinked",
+              "step_up_percentage": 0.0
+            },
+            {
+              "goal_id": "goal_3",
+              "instrument_id": "instrument_14",
+              "instrument_name": "National Pension Scheme (NPS)",
+              "instrument_type": "Government Scheme",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "asset_type": "Hybrid",
+              "asset_sub_type": "Hybrid Government",
+              "hybrid_allocation": [
+                {
+                  "hybrid_allocation_id": "allocation_1",
+                  "allocation_type": "Equity India",
+                  "allocation_percentage": 0.65
+                },
+                {
+                  "hybrid_allocation_id": "allocation_2",
+                  "allocation_type": "Debt Government",
+                  "allocation_percentage": 0.25
+                },
+                {
+                  "hybrid_allocation_id": "allocation_3",
+                  "allocation_type": "Debt Corporate",
+                  "allocation_percentage": 0.15
+                }
+              ],
+              "frequency": "Monthly",
+              "start_date": "2022-04-01",
+              "end_date": "2044-12-01",
+              "expected_roi": 0.10,
+              "expected_corpus": 36861241,
+              "ytd_corpus": 1493279,
+              "step_up_type": "SalaryLinked",
+              "step_up_percentage": 0.0
+            }
+          ]
+        },
+        {
+          "portfolio_id": "portfolio_1",
+          "goal_id": "goal_4",
+          "goal_name": "Dream Home Fund",
+          "target_corpus": 10264268,
+          "target_year": 2033,
+          "goal_expected_equity_allocation": 0.0,
+          "goal_expected_debt_allocation": 0.0,
+          "goal_expected_gold_allocation": 0.0,
+          "goal_current_equity_allocation": 0.0,
+          "goal_current_debt_allocation": 0.0,
+          "goal_current_gold_allocation": 0.0,
+          "goal_tax_liability": 0.0,
+          "investments": [
+            {
+              "goal_id": "goal_4",
+              "instrument_id": "instrument_15",
+              "instrument_name": "HDFC Sensex Index Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2025-01-27",
+              "end_date": "2032-12-27",
+              "expected_roi": 0.11,
+              "expected_corpus": 2393700,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 7200,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_48",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2025-01-27",
+                  "amount": 7200
+                },
+                {
+                  "schedule_id": "schedule_49",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2026-06-27",
+                  "amount": 15000
+                },
+                {
+                  "schedule_id": "schedule_50",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2027-06-27",
+                  "amount": 16000
+                },
+                {
+                  "schedule_id": "schedule_51",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-06-27",
+                  "amount": 17500
+                },
+                {
+                  "schedule_id": "schedule_52",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2029-06-27",
+                  "amount": 19000
+                },
+                {
+                  "schedule_id": "schedule_53",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2030-06-27",
+                  "amount": 20500
+                },
+                {
+                  "schedule_id": "schedule_54",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2031-06-27",
+                  "amount": 22000
+                },
+                {
+                  "schedule_id": "schedule_55",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-06-27",
+                  "amount": 24000
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_4",
+              "instrument_id": "instrument_16",
+              "instrument_name": "Kotak Large and Midcap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Large and Mid Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2025-01-13",
+              "end_date": "2032-12-13",
+              "expected_roi": 0.12,
+              "expected_corpus": 2510878,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 10800,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_56",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2025-01-13",
+                  "amount": 10800
+                },
+                {
+                  "schedule_id": "schedule_57",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2026-06-13",
+                  "amount": 15000
+                },
+                {
+                  "schedule_id": "schedule_58",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2027-06-13",
+                  "amount": 16000
+                },
+                {
+                  "schedule_id": "schedule_59",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-06-13",
+                  "amount": 17500
+                },
+                {
+                  "schedule_id": "schedule_60",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2029-06-13",
+                  "amount": 19000
+                },
+                {
+                  "schedule_id": "schedule_61",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2030-06-13",
+                  "amount": 20500
+                },
+                {
+                  "schedule_id": "schedule_62",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2031-06-13",
+                  "amount": 22000
+                },
+                {
+                  "schedule_id": "schedule_63",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-06-13",
+                  "amount": 24000
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_4",
+              "instrument_id": "instrument_17",
+              "instrument_name": "WhiteOak Capital Mid Cap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Mid Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2026-05-13",
+              "end_date": "2033-05-13",
+              "expected_roi": 0.12,
+              "expected_corpus": 2001617,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 12500,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_64",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2026-05-13",
+                  "amount": 12500
+                },
+                {
+                  "schedule_id": "schedule_65",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2027-06-13",
+                  "amount": 13500
+                },
+                {
+                  "schedule_id": "schedule_66",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2028-06-13",
+                  "amount": 14500
+                },
+                {
+                  "schedule_id": "schedule_67",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2029-06-13",
+                  "amount": 15500
+                },
+                {
+                  "schedule_id": "schedule_68",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2030-06-13",
+                  "amount": 17000
+                },
+                {
+                  "schedule_id": "schedule_69",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2031-06-13",
+                  "amount": 18500
+                },
+                {
+                  "schedule_id": "schedule_70",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-06-13",
+                  "amount": 19500
+                }
+              ]
+            },
+            {
+              "goal_id": "goal_4",
+              "instrument_id": "instrument_18",
+              "instrument_name": "Invesco Small Cap Fund",
+              "instrument_type": "Mutual Fund",
+              "instrument_status": "Active",
+              "instrument_tax_liability": 0.0,
+              "instrument_tax_liability_now": 0.0,
+              "fund_category": "Small Cap",
+              "asset_type": "Equity",
+              "asset_sub_type": "Equity India",
+              "frequency": "Monthly",
+              "start_date": "2026-04-27",
+              "end_date": "2033-05-27",
+              "expected_roi": 0.12,
+              "expected_corpus": 1208736,
+              "ytd_corpus": 0,
+              "step_up_type": "Manual",
+              "step_up_percentage": 0.0,
+              "instrument_start_amount": 7500,
+              "schedule": [
+                {
+                  "schedule_id": "schedule_71",
+                  "schedule_name": "Initial SIP Investment",
+                  "date": "2026-04-27",
+                  "amount": 7500
+                },
+                {
+                  "schedule_id": "schedule_72",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2027-06-27",
+                  "amount": 8500
+                },
+                {
+                  "schedule_id": "schedule_73",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2029-06-27",
+                  "amount": 9500
+                },
+                {
+                  "schedule_id": "schedule_74",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2030-06-27",
+                  "amount": 10000
+                },
+                {
+                  "schedule_id": "schedule_75",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2031-06-27",
+                  "amount": 11000
+                },
+                {
+                  "schedule_id": "schedule_76",
+                  "schedule_name": "Step-up SIP Investment",
+                  "date": "2032-06-27",
+                  "amount": 12000
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

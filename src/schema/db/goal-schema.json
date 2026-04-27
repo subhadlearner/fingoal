@@ -1,0 +1,112 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/goal-schema.json",
+    "title": "Financial Goal",
+    "type": "object",
+    "properties": {
+        "goal_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",
+            "readOnly": true,
+            "format": "uuid"
+        },
+        "portfolio_id": {
+            "type": "string",
+            "description": "ID of the portfolio to which the goal belongs.",
+            "readOnly": true,
+            "format": "uuid"
+        },
+        "goal_name": {
+            "type": "string",
+            "title": "Goal Name",
+            "description": "Name of the financial goal.",
+            "writeOnly": false,
+            "minLength": 1,
+            "maxLength": 100
+        },
+        "target_year": {
+            "type": "integer",
+            "title": "Target Year",
+            "description": "Year by which the goal is to be achieved.",
+            "writeOnly": false,
+            "minimum": 2024
+        },
+        "target_corpus": {
+            "type": "number",
+            "title": "Target Corpus",
+            "description": "Target corpus value for the goal.",
+            "writeOnly": false,
+            "minimum": 0.0
+        },
+        "goal_expected_equity_allocation": {
+            "type": "number",
+            "title": "Expected Equity Allocation",
+            "description": "Expected equity allocation percentage for the goal.",
+            "writeOnly": false,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goal_expected_debt_allocation": {
+            "type": "number",
+            "title": "Expected Debt Allocation",
+            "description": "Expected debt allocation percentage for the goal.",
+            "writeOnly": false,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goal_expected_gold_allocation": {
+            "type": "number",
+            "title": "Expected Gold Allocation",
+            "description": "Expected gold allocation percentage for the goal.",
+            "writeOnly": false,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goal_current_equity_allocation": {
+            "type": "number",
+            "title": "Current Equity Allocation",
+            "description": "Current equity allocation percentage for the goal.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goal_current_debt_allocation": {
+            "type": "number",
+            "title": "Current Debt Allocation",
+            "description": "Current debt allocation percentage for the goal.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goal_current_gold_allocation": {
+            "type": "number",
+            "title": "Current Gold Allocation",
+            "description": "Current gold allocation percentage for the goal.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goal_tax_liability": {
+            "type": "number",
+            "title": "Estimated Tax Liability on Goal on End Date",
+            "description": "Estimated tax liability for the financial goal at the target year based on the expected corpus and the applicable tax rates. This should be system calculated based on the formula - Tax = (STCG * stcg_percentage) + (LTCG * ltcg_percentage) + (Cess * cess_percentage)",
+            "readOnly": true, 
+            "minimum": 0.0
+        },
+        "investments": {
+            "type": "array",
+            "description": "List of investments associated with the goal.",
+            "title": "Investments",
+            "items": {
+                "$ref": "instrument-schema.json"
+            }
+        }
+    },
+    "required": [
+        "goal_id",
+        "portfolio_id",
+        "goal_name",
+        "target_year",
+        "target_corpus"
+    ]
+}

@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/portfolio-schema.json",
+    "title": "Portfolio Schema",
+    "description": "Standardized schema for portfolio data.",
+    "type": "object",
+    "properties": {
+        "portfolio_id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Primary Key for database (UUID).",
+            "format": "uuid"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "ID of the user to whom the portfolio belongs.",
+            "readOnly": true,
+            "format": "uuid"
+        },
+        "portfolio_name": {
+            "type": "string",
+            "title": "Portfolio Name",
+            "description": "Name of the portfolio.",
+            "writeOnly": false,
+            "minLength": 1,
+            "maxLength": 100
+        },
+        "portfolio_description": {
+            "type": "string",
+            "title": "Portfolio Description",
+            "description": "Description of the portfolio.",
+            "writeOnly": false,
+            "maxLength": 500
+        },
+        "portfolio_current_corpus": {
+            "type": "number",
+            "title": "Current Corpus",
+            "description": "Current corpus value of the portfolio.",
+            "readOnly": true,
+            "minimum": 0.0
+        },
+        "portfolio_current_equity_allocation": {
+            "type": "number",
+            "title": "Current Equity Allocation",
+            "description": "Current equity allocation percentage of the portfolio.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "portfolio_current_debt_allocation": {
+            "type": "number",
+            "title": "Current Debt Allocation",
+            "description": "Current debt allocation percentage of the portfolio.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "portfolio_current_gold_allocation": {
+            "type": "number",
+            "title": "Current Gold Allocation",
+            "description": "Current gold allocation percentage of the portfolio.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0
+        },
+        "goals": {
+            "type": "array",
+            "title": "Goals",
+            "writeOnly": false,
+            "description": "List of goals for the portfolio.",
+            "items": { "$ref": "goal-schema.json" }
+        } 
+    },
+    "required": [
+        "portfolio_id",
+        "user_id",
+        "portfolio_name"
+    ]
+}

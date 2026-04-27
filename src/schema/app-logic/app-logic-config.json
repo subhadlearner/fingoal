@@ -1,0 +1,41 @@
+{
+  "app_name": "FinGoal",
+  "logic_version": "1.0",
+  "ui_mapping": {
+    "source_rendering": {
+      "USER_INPUT": "EditableField",
+      "SYSTEM_CALCULATED": "ReadOnlyLabel",
+      "SYSTEM_GENERATED": "Hidden"
+    },
+    "type_pickers": {
+      "Enum": "DropdownSelector",
+      "DateTime": "DatePicker",
+      "Float": "DecimalInput",
+      "Integer": "NumberInput"
+    }
+  },
+  "calculation_triggers": [
+    {
+      "target_field": "expected_corpus",
+      "trigger_events": ["on_roi_change", "on_schedule_update", "on_start_date_change"],
+      "engine_class": "FinancialMathEngine",
+      "function": "calculateFutureValue"
+    },
+    {
+      "target_field": "tax_liability",
+      "trigger_events": ["on_corpus_calculated"],
+      "engine_class": "TaxEngine",
+      "function": "applyIndianTaxSlabs"
+    }
+  ],
+  "validation_rules": {
+    "REQUIRED": "Error: This field cannot be empty",
+    "POSITIVE_ONLY": "Error: Value must be greater than zero"
+  },
+  "asset_theme": {
+    "Equity": { "color": "#2196F3", "icon": "ic_trending_up" },
+    "Debt": { "color": "#4CAF50", "icon": "ic_safety" },
+    "Gold": { "color": "#FFC107", "icon": "ic_gold_bar" },
+    "Hybrid": { "color": "#FF9800", "icon": "ic_balance" }
+  }
+}

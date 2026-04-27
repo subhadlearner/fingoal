@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/app-master-data-schema.json",
+    "title": "Application Master Data Schema",
+    "description": "Standardized schema for application master data.",
+    "type": "object",
+    "properties": {
+        "ltcg_percentage": {
+            "type": "number",
+            "description": "Long-term capital gains percentage.",
+            "format": "percentage",
+            "readOnly": true,
+            "default": 0.125
+        },
+        "ltcg_exemption_limit": {
+            "type": "number",
+            "description": "Long-term capital gains exemption limit.",
+            "readOnly": true,
+            "default": 100000
+        },
+        "stcg_percentage": {
+            "type": "number",
+            "description": "Short-term capital gains percentage.",
+            "format": "percentage",
+            "readOnly": true,
+            "default": 0.2
+        },
+        "cess_percentage": {
+            "type": "number",
+            "description": "Cess percentage.",
+            "format": "percentage",
+            "readOnly": true,
+            "default": 0.04
+        },
+        "inflation_rate": {
+            "type": "number",
+            "description": "Inflation rate.",
+            "format": "percentage",
+            "readOnly": true,
+            "default": 0.06
+        },
+        "currency": {
+            "type": "string",
+            "title": "Currency",            
+            "description": "Currency for financial calculations.",
+            "readOnly": true,
+            "default": "INR"
+        }
+    },
+    "required": [
+        "ltcg_percentage",
+        "ltcg_exemption_limit",
+        "stcg_percentage",
+        "cess_percentage",
+        "inflation_rate",
+        "currency"
+    ]
+}

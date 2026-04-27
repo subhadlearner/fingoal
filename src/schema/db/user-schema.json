@@ -1,0 +1,139 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/user-schema.json",
+    "title": "User Profile Schema",
+    "description": "Standardized schema for user personal and financial profiling data.",
+    "type": "object",
+    "properties": {
+        "user_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",
+            "readOnly": true,
+            "format": "uuid"
+        },
+        "user_name": {
+            "type": "string",
+            "title": "Full Name",
+            "description": "Full name of the user.",
+            "writeOnly": false,
+            "minLength": 2
+        },
+        "user_email": {
+            "type": "string",
+            "title": "Email Address",
+            "description": "Email address of the user.",
+            "writeOnly": false,
+            "format": "email"
+        },
+        "user_pan": {
+            "type": "string",
+            "title": "PAN Number",
+            "pattern": "^[A-Z]{5}[0-9]{4}[A-Z]{1}$",
+            "description": "Indian Income Tax PAN format (e.g., ABCDE1234F)",
+            "writeOnly": false
+        },
+        "user_phone": {
+            "type": "string",
+            "title": "Phone Number",
+            "description": "Phone number of the user.",
+            "pattern": "^\\+?[1-9]\\d{1,14}$",
+            "writeOnly": false
+        },
+        "user_dob": {
+            "type": "string",
+            "title": "Date of Birth",
+            "description": "Date of birth of the user.",
+            "format": "date",
+            "writeOnly": false
+        },
+        "user_retirement_age": {
+            "type": "integer",
+            "title": "Retirement Age",
+            "description": "Expected retirement age of the user for retirement goal calculations.",
+            "writeOnly": false,
+            "minimum": 18,
+            "maximum": 100
+        },
+        "user_gender": {
+            "type": "string",
+            "title": "Gender",
+            "description": "Gender of the user.",
+            "writeOnly": false,
+            "enum": [
+                "Male",
+                "Female",
+                "Other"
+            ]
+        },
+        "user_occupation": {
+            "type": "string",
+            "title": "Occupation",
+            "description": "Current occupation of the user.",
+            "writeOnly": false
+        },
+        "user_marital_status": {
+            "type": "string",
+            "title": "Marital Status",
+            "description": "Marital status of the user.",
+            "writeOnly": false,
+            "enum": [
+                "Married",
+                "Unmarried"
+            ]
+        },
+        "user_risk_profile": {
+            "type": "string",
+            "title": "Risk Profile",
+            "description": "Risk profile of the user.",
+            "writeOnly": false,
+            "enum": [
+                "Aggressive",
+                "Moderate",
+                "Conservative"
+            ]
+        },
+        "user_current_monthly_expense": {
+            "type": "number",
+            "title": "Current Monthly Expense",
+            "description": "Current monthly expenses of the user.",
+            "writeOnly": false,
+            "minimum": 0.0
+        },
+        "user_monthly_expense_cap": {
+            "type": "number",
+            "title": "Monthly Expense Cap",
+            "description": "Maximum monthly expense cap for the user.",
+            "writeOnly": false,
+            "minimum": 0.0
+        },
+        "user_expense_inflation_rate": {
+            "type": "number",
+            "title": "Expense Inflation Rate",
+            "description": "Inflation rate for the user's expenses.",
+            "writeOnly": false,
+            "minimum": 0,
+            "maximum": 10
+        },
+        "user_emergency_fund_no_of_months": {
+            "type": "integer",
+            "title": "Emergency Fund (Months)",
+            "description": "Number of months of expenses to cover in the emergency fund.",
+            "writeOnly": false,
+            "minimum": 0,
+            "maximum": 24
+        }
+    },
+    "required": [
+        "user_id",
+        "user_name",
+        "user_email",
+        "user_pan",
+        "user_phone",
+        "user_dob",
+        "user_retirement_age",
+        "user_current_monthly_expense",
+        "user_monthly_expense_cap",
+        "user_expense_inflation_rate",
+        "user_emergency_fund_no_of_months"
+    ]
+}

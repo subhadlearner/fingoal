@@ -1,0 +1,34 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/hybrid-allocation-schema.json",
+    "title": "Hybrid Allocation Breakdown",
+    "type": "object",
+    "properties": {
+        "hybrid_allocation_id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "allocation_type": {
+            "enum": [
+                "Equity India",
+                "Equity US",
+                "Equity International except US",
+                "Debt Government",
+                "Debt Corporate",
+                "Debt SavingsAccount",
+                "Debt FixedDeposit",
+                "Hybrid India",
+                "Gold"
+            ]
+        },
+        "allocation_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+        }
+    },
+    "required": [
+        "allocation_type",
+        "allocation_percentage"
+    ]
+}

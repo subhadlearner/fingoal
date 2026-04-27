@@ -1,0 +1,223 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/instrument-schema.json",
+    "title": "Investment Instrument",
+    "type": "object",
+    "properties": {
+        "instrument_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",
+            "format": "uuid"
+        },
+        "goal_id": {
+            "type": "string",
+            "description": "ID of the goal to which the instrument belongs.",
+            "format": "uuid"
+        },
+        "instrument_name": {
+            "type": "string",
+            "title": "Instrument Name",
+            "description": "Name of the investment instrument.",
+            "minLength": 1,
+            "maxLength": 100
+        },
+        "instrument_type": {
+            "title": "Instrument Type",
+            "description": "Type of the financial instrument for example - Mutual Fund",
+            "enum": [
+                "Mutual Fund",
+                "Government Scheme",
+                "ETF",
+                "Stock Option",
+                "Fixed Deposit",
+                "Savings Account"
+            ]
+        },
+        "instrument_status": {
+            "title": "Instrument Status",
+            "description": "Current status of the investment instrument.",
+            "enum": [
+                "Active",
+                "Paused",
+                "Stopped"
+            ]
+        },
+        "instrument_tax_liability": {
+            "type": "number",
+            "title": "Instrument Tax Liability",
+            "description": "Tax liability associated with the investment instrument.",
+            "minimum": 0
+        },
+        "instrument_tax_liability_now": {
+            "type": "number",
+            "title": "Instrument Tax Liability",
+            "description": "Tax liability associated with the investment instrument.",
+            "minimum": 0
+        },
+        "fund_category": {
+            "type": "string",
+            "title": "Fund Category",
+            "description": "Category of the fund. For example, Flexicap, Large Cap, Mid Cap etc. Applicable for only Mutual Funds.",
+            "minLength": 1,
+            "maxLength": 100
+        },
+        "frequency": {
+            "title": "Frequency",
+            "description": "Frequency of the investment.",
+            "enum": [
+                "Monthly",
+                "Yearly"
+            ]
+        },
+        "asset_type": {
+            "title": "Asset Type",
+            "description": "Type of the asset.",
+            "enum": [
+                "Equity",
+                "Debt",
+                "Hybrid",
+                "Gold"
+            ]
+        },
+        "asset_sub_type": {
+            "title": "Asset Sub-Type",
+            "description": "Sub-type of the asset.",
+            "enum": [
+                "Equity India",
+                "Equity US",
+                "Equity International except US",
+                "Debt Government",
+                "Debt Corporate",
+                "Debt SavingsAccount",
+                "Debt FixedDeposit",
+                "Hybrid India",
+                "Gold"
+            ]
+        },
+        "hybrid_allocation": {
+            "type": "array",
+            "items": {
+                "$ref": "hybrid-allocation-schema.json"
+            }
+        },
+        "start_date": {
+            "type": "string",
+            "title": "Start Date",
+            "description": "Date when the investment was started.",
+            "format": "date"
+        },
+        "end_date": {
+            "type": "string",
+            "title": "End Date",
+            "description": "Date when the investment ends.",
+            "format": "date"
+        },
+        "expected_roi": {
+            "type": "number",
+            "title": "Expected ROI",
+            "description": "Expected rate of return for the investment instrument.",
+            "default": 0.12
+        },
+        "expected_corpus": {
+            "type": "number",
+            "title": "Expected Corpus",
+            "description": "Expected corpus value for the investment instrument.",
+            "minimum": 0.0
+        },
+        "ytd_corpus": {
+            "type": "number",
+            "title": "YTD Corpus",
+            "description": "Year-to-date corpus value for the investment instrument.",
+            "minimum": 0.0
+        },
+        "instrument_start_amount": {
+            "type": "number",
+            "title": "Instrument Start Amount",
+            "description": "Initial amount invested in the instrument.",
+            "minimum": 0.0
+        },
+        "step_up_type": {
+            "title": "Step-Up Type",
+            "description": "Type of step-up for the investment instrument.",
+            "enum": [
+                "SalaryLinked",
+                "Manual",
+                "AutomaticYoY",
+                "Not Applicable"
+            ]
+        },
+        "step_up_percentage": {
+            "type": "number",
+            "title": "Step-Up Percentage",
+            "description": "Percentage by which the investment amount will increase. Only applicable for AutomaticYoY ste-up type.",
+            "minimum": 0.1
+        },
+        "investment_schedule": {
+            "type": "array",
+            "items": {
+                "$ref": "schedule-schema.json"
+            }
+        }
+    },
+    "required": [
+        "instrument_id",
+        "goal_id",
+        "instrument_name",
+        "instrument_type",
+        "asset_type",
+        "ytd_corpus",
+        "instrument_start_amount",
+        "start_date",
+        "expected_roi",
+        "asset_sub_type",
+        "frequency",
+        "instrument_status"
+    ],
+    "allOf": [
+        {
+            "description": "Rule 1: If it is a Mutual Fund, require fund_category",
+            "if": {
+                "properties": {
+                    "instrument_type": {
+                        "const": "Mutual Fund"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "fund_category"
+                ]
+            }
+        },
+        {
+            "description": "Rule 2: If asset_type is Hybrid, require hybrid_details",
+            "if": {
+                "properties": {
+                    "asset_type": {
+                        "const": "Hybrid"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "hybrid_allocation"
+                ]
+            }
+        },
+        {
+            "description": "Rule 3: Example for step-up logic",
+            "if": {
+                "properties": {
+                    "step_up_type": {
+                        "const": "AutomaticYoY"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "step_up_percentage"
+                ]
+            }
+        }
+    ]
+}
