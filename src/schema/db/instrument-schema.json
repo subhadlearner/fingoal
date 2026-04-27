@@ -205,7 +205,7 @@
             }
         },
         {
-            "description": "Rule 3: Example for step-up logic",
+            "description": "Rule 3: If step_up_type is AutomaticYoY, require step_up_percentage",
             "if": {
                 "properties": {
                     "step_up_type": {
@@ -216,6 +216,21 @@
             "then": {
                 "required": [
                     "step_up_percentage"
+                ]
+            }
+        },
+        {
+            "description": "Rule 4: If step_up_type is Manual, require investment_schedule",
+            "if": {
+                "properties": {
+                    "step_up_type": {
+                        "const": "Manual"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "investment_schedule"
                 ]
             }
         }
