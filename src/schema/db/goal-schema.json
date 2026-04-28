@@ -22,21 +22,41 @@
             "description": "Name of the financial goal.",
             "writeOnly": false,
             "minLength": 1,
-            "maxLength": 100
+            "maxLength": 100,
+            "ui_type": "text"
         },
         "target_year": {
             "type": "integer",
             "title": "Target Year",
             "description": "Year by which the goal is to be achieved.",
             "writeOnly": false,
-            "minimum": 2024
+            "minimum": 2024,
+            "ui_type": "number"
         },
         "target_corpus": {
             "type": "number",
             "title": "Target Corpus",
             "description": "Target corpus value for the goal.",
             "writeOnly": false,
-            "minimum": 0.0
+            "minimum": 0.0,
+            "ui_type": "number"
+        },
+        "goal_current_corpus": {
+            "type": "number",
+            "title": "Current Corpus",
+            "description": "Current corpus value for the goal.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "ui_type": "number"
+        },
+        "goal_progress_percentage": {
+            "type": "number",
+            "title": "Progress Percentage",
+            "description": "Percentage of progress towards the goal.",
+            "readOnly": true,
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_expected_equity_allocation": {
             "type": "number",
@@ -44,7 +64,8 @@
             "description": "Expected equity allocation percentage for the goal.",
             "writeOnly": false,
             "minimum": 0.0,
-            "maximum": 100.0
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_expected_debt_allocation": {
             "type": "number",
@@ -52,7 +73,8 @@
             "description": "Expected debt allocation percentage for the goal.",
             "writeOnly": false,
             "minimum": 0.0,
-            "maximum": 100.0
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_expected_gold_allocation": {
             "type": "number",
@@ -60,7 +82,8 @@
             "description": "Expected gold allocation percentage for the goal.",
             "writeOnly": false,
             "minimum": 0.0,
-            "maximum": 100.0
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_current_equity_allocation": {
             "type": "number",
@@ -68,7 +91,8 @@
             "description": "Current equity allocation percentage for the goal.",
             "readOnly": true,
             "minimum": 0.0,
-            "maximum": 100.0
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_current_debt_allocation": {
             "type": "number",
@@ -76,7 +100,8 @@
             "description": "Current debt allocation percentage for the goal.",
             "readOnly": true,
             "minimum": 0.0,
-            "maximum": 100.0
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_current_gold_allocation": {
             "type": "number",
@@ -84,7 +109,8 @@
             "description": "Current gold allocation percentage for the goal.",
             "readOnly": true,
             "minimum": 0.0,
-            "maximum": 100.0
+            "maximum": 100.0,
+            "ui_type": "number"
         },
         "goal_tax_liability": {
             "type": "number",

@@ -23,14 +23,16 @@
             "description": "Name of the portfolio.",
             "writeOnly": false,
             "minLength": 1,
-            "maxLength": 100
+            "maxLength": 100,
+            "ui_type": "text"
         },
         "portfolio_description": {
             "type": "string",
             "title": "Portfolio Description",
             "description": "Description of the portfolio.",
             "writeOnly": false,
-            "maxLength": 500
+            "maxLength": 500,
+            "ui_type": "textarea"
         },
         "portfolio_current_corpus": {
             "type": "number",

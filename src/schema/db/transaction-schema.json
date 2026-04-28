@@ -1,0 +1,78 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fingoal.com/schemas/transaction-schema.json",
+    "title": "Transaction",
+    "type": "object",
+    "properties": {
+        "instrument_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",
+            "format": "uuid",
+            "readOnly": true
+        },
+        "transaction_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",  
+            "format": "uuid",
+            "readOnly": true
+        },
+        "transaction_date": {
+            "type": "string",
+            "title": "Date",
+            "description": "Date of the investment schedule.",
+            "format": "date",
+            "readOnly": true
+        },
+        "transaction_amount": {
+            "type": "number",
+            "title": "Amount",
+            "description": "Amount of the investment schedule.",
+            "minimum": 0,
+            "readOnly": true
+        },
+        "stamp_duty": {
+            "type": "number",
+            "title": "Stamp Duty",
+            "description": "Stamp duty for the investment schedule.",
+            "minimum": 0,
+            "readOnly": true
+        },
+        "nav": {
+            "type": "number",
+            "title": "NAV",
+            "description": "Net Asset Value for the investment schedule.",
+            "minimum": 0,
+            "readOnly": true
+        },
+        "units_purchased": {
+            "type": "number",
+            "title": "Unit Purchased",
+            "description": "Number of units purchased.",
+            "minimum": 0,
+            "readOnly": true
+        },
+        "unit_balance": {
+            "type": "number",
+            "title": "Unit Balance",
+            "description": "Number of units balance on the date of transaction.",
+            "minimum": 0,
+            "readOnly": true
+        },
+        "transaction_type": {
+            "title": "Transaction Type",
+            "description": "Type of the transaction.",
+            "enum": [
+                "BUY",
+                "SELL",
+                "DIVIDEND"
+            ],
+            "readOnly": true
+        }
+    },
+    "required": [
+        "instrument_id",
+        "transaction_id",
+        "transaction_date",
+        "transaction_amount"
+    ]
+}

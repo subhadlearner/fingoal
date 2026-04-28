@@ -16,6 +16,7 @@
             "title": "Full Name",
             "description": "Full name of the user.",
             "writeOnly": false,
+            "ui_type": "text",
             "minLength": 2
         },
         "user_email": {
@@ -23,6 +24,7 @@
             "title": "Email Address",
             "description": "Email address of the user.",
             "writeOnly": false,
+            "ui_type": "email",
             "format": "email"
         },
         "user_pan": {
@@ -30,21 +32,25 @@
             "title": "PAN Number",
             "pattern": "^[A-Z]{5}[0-9]{4}[A-Z]{1}$",
             "description": "Indian Income Tax PAN format (e.g., ABCDE1234F)",
-            "writeOnly": false
+            "writeOnly": false,
+            "ui_type": "text"
         },
         "user_phone": {
             "type": "string",
             "title": "Phone Number",
             "description": "Phone number of the user.",
             "pattern": "^\\+?[1-9]\\d{1,14}$",
-            "writeOnly": false
+            "format": "phone",
+            "writeOnly": false,
+            "ui_type": "text"
         },
         "user_dob": {
             "type": "string",
             "title": "Date of Birth",
             "description": "Date of birth of the user.",
             "format": "date",
-            "writeOnly": false
+            "writeOnly": false,
+            "ui_type": "date"
         },
         "user_retirement_age": {
             "type": "integer",
@@ -52,7 +58,8 @@
             "description": "Expected retirement age of the user for retirement goal calculations.",
             "writeOnly": false,
             "minimum": 18,
-            "maximum": 100
+            "maximum": 100,
+            "ui_type": "number"
         },
         "user_gender": {
             "type": "string",
@@ -63,13 +70,15 @@
                 "Male",
                 "Female",
                 "Other"
-            ]
+            ],
+            "ui_type": "dropdown"
         },
         "user_occupation": {
             "type": "string",
             "title": "Occupation",
             "description": "Current occupation of the user.",
-            "writeOnly": false
+            "writeOnly": false,
+            "ui_type": "text"
         },
         "user_marital_status": {
             "type": "string",
@@ -79,7 +88,8 @@
             "enum": [
                 "Married",
                 "Unmarried"
-            ]
+            ],
+            "ui_type": "dropdown"
         },
         "user_risk_profile": {
             "type": "string",
@@ -90,21 +100,24 @@
                 "Aggressive",
                 "Moderate",
                 "Conservative"
-            ]
+            ],
+            "ui_type": "dropdown"
         },
         "user_current_monthly_expense": {
             "type": "number",
             "title": "Current Monthly Expense",
             "description": "Current monthly expenses of the user.",
             "writeOnly": false,
-            "minimum": 0.0
+            "minimum": 0.0,
+            "ui_type": "number"
         },
         "user_monthly_expense_cap": {
             "type": "number",
             "title": "Monthly Expense Cap",
             "description": "Maximum monthly expense cap for the user.",
             "writeOnly": false,
-            "minimum": 0.0
+            "minimum": 0.0,
+            "ui_type": "number"
         },
         "user_expense_inflation_rate": {
             "type": "number",
@@ -112,7 +125,8 @@
             "description": "Inflation rate for the user's expenses.",
             "writeOnly": false,
             "minimum": 0,
-            "maximum": 10
+            "maximum": 10,
+            "ui_type": "number"
         },
         "user_emergency_fund_no_of_months": {
             "type": "integer",
@@ -120,8 +134,21 @@
             "description": "Number of months of expenses to cover in the emergency fund.",
             "writeOnly": false,
             "minimum": 0,
-            "maximum": 24
+            "maximum": 24,
+            "ui_type": "number"
+        },
+        "user_it_regime": {
+            "type": "number",
+            "title": "IT Regime",
+            "description": "IT regime of the user.",
+            "writeOnly": false,
+            "enum": [
+                "OLD",
+                "NEW"
+            ],
+            "ui_type": "dropdown"
         }
+
     },
     "required": [
         "user_id",

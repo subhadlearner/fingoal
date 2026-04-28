@@ -16,6 +16,10 @@
             "Aggressive",
             "Moderate",
             "Conservative"
+        ],
+        "user_it_regimes": [
+            "OLD",
+            "NEW"
         ]
     },
     "attribute_definitions": {
@@ -121,6 +125,13 @@
             "description": "Number of months of expenses user wants to keep as emergency fund for emergency fund calculations.",
             "source": "USER_INPUT",
             "validation": "REQUIRED"
+        },
+        "user_it_regime": {
+            "Label": "Income Tax Regime",
+            "data_type": "Enum",
+            "description": "Income tax regime of the user for tax calculations.",
+            "source": "USER_INPUT",
+            "options_ref": "data_constraints.user_it_regimes"
         }
     },
     "user_data": {
@@ -138,6 +149,7 @@
         "user_current_monthly_expense": 100000,
         "user_monthly_expense_cap": 115000,
         "user_expense_inflation_rate": 0.05,
-        "user_emergency_fund_no_of_months": 6
+        "user_emergency_fund_no_of_months": 6,
+        "user_it_regime": "NEW"
     }
 }

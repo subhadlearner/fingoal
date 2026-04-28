@@ -51,6 +51,11 @@
       "Manual",
       "AutomaticYoY",
       "Not Applicable"
+    ],
+    "transaction_types": [
+      "BUY",
+      "SELL",
+      "DIVIDEND"
     ]
   },
   "attribute_definitions": {
@@ -127,6 +132,18 @@
       "description": "Target corpus for the financial goal at the target year",
       "source": "USER_INPUT",
       "validation": "REQUIRED"
+    },
+    "goal_current_corpus": {
+      "Label": "Current Corpus for the Goal",
+      "data_type": "Float",
+      "description": "Current corpus for the financial goal based on the corpus added by the user for each instrument linked to the goal. This should be system calculated based on the sum of ytd corpus for all instruments linked to the goal.",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "goal_progress_percentage": {
+      "Label": "Progress Percentage towards the Goal",
+      "data_type": "Float",
+      "description": "Progress percentage towards the financial goal based on the current corpus and the target corpus. This should be system calculated based on the formula - Progress Percentage = (Current Corpus / Target Corpus) * 100",
+      "source": "SYSTEM_CALCULATED"
     },
     "goal_expected_equity_allocation": {
       "Label": "Expected Equity Allocation for the Goal?",
@@ -352,7 +369,58 @@
       "description": "Percentage allocation for the allocation type in hybrid instruments. The sum of all allocation percentages for a hybrid instrument should be 100%.",
       "source": "USER_INPUT",
       "validation": "REQUIRED"
-    }
+    },
+    "transaction_id": {
+      "data_type": "String",
+      "description": "Primary Key for database. Use UUID or unique slug.",
+      "source": "SYSTEM_GENERATED"
+    },
+    "transaction_date": {
+      "Label": "Transaction Date",
+      "data_type": "DateTime",
+      "description": "Date of the transaction for the financial instrument.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "transaction_amount": {
+      "Label": "Transaction Amount",
+      "data_type": "Float",
+      "description": "Amount of the transaction for the financial instrument.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "stamp_duty": {
+      "Label": "Stamp Duty on Transaction",
+      "data_type": "Float",
+      "description": "Stamp duty for the transaction based on the applicable rates. This should be system calculated based on the formula - Stamp Duty = transaction_amount * stamp_duty_rate",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "nav": {
+      "Label": "NAV on Transaction Date",
+      "data_type": "Float",
+      "description": "NAV of the financial instrument on the transaction date. This can be used to calculate the units purchased for mutual funds and ETFs.",
+      "source": "USER_INPUT",
+      "validation": "REQUIRED"
+    },
+    "units_purchased": {
+      "Label": "Units Purchased",
+      "data_type": "Float",
+      "description": "Units purchased for the transaction calculated based on the transaction amount, stamp duty and NAV for mutual funds and ETFs. This should be system calculated based on the formula - Units Purchased = (transaction_amount - stamp_duty) / nav",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "unit_balance": {
+      "Label": "Unit Balance after Transaction",
+      "data_type": "Float",
+      "description": "Unit balance for the financial instrument after the transaction. This should be system calculated based on the previous unit balance and the units purchased or sold in the transaction.",
+      "source": "SYSTEM_CALCULATED"
+    },
+    "transaction_type": {
+      "Label": "Transaction Type",
+      "data_type": "Enum",
+      "description": "Type of the transaction for the financial instrument for example - BUY, SELL, DIVIDEND. This can be used for calculating the current corpus, expected corpus, tax liability and for filtering transactions.",
+      "source": "USER_INPUT",
+      "options_ref": "data_constraints.transaction_types"
+     }
   },
   "portfolio_data": [
     {
@@ -371,6 +439,8 @@
           "goal_name": "Create Emergency Fund",
           "target_corpus": 0,
           "target_year": 0,
+          "goal_current_corpus": 619000,
+          "goal_progress_percentage": 10.0,
           "goal_expected_equity_allocation": 0.0,
           "goal_expected_debt_allocation": 0.0,
           "goal_expected_gold_allocation": 0.0,
@@ -391,8 +461,8 @@
               "asset_type": "Debt",
               "asset_sub_type": "Debt Government",
               "frequency": "Not Applicable",
-              "start_date": "0000-00-00",
-              "end_date": "0000-00-00",
+              "start_date": null,
+              "end_date": null,
               "expected_roi": 0.0025,
               "expected_corpus": 0,
               "ytd_corpus": 300000,
@@ -412,8 +482,8 @@
               "asset_type": "Debt",
               "asset_sub_type": "Debt Government",
               "frequency": "Not Applicable",
-              "start_date": "0000-00-00",
-              "end_date": "0000-00-00",
+              "start_date": null,
+              "end_date": null,
               "expected_roi": 0.0025,
               "expected_corpus": 0,
               "ytd_corpus": 200000,
@@ -433,8 +503,8 @@
               "asset_type": "Debt",
               "asset_sub_type": "Debt Government",
               "frequency": "Not Applicable",
-              "start_date": "0000-00-00",
-              "end_date": "0000-00-00",
+              "start_date": null,
+              "end_date": null,
               "expected_roi": 0.0025,
               "expected_corpus": 0,
               "ytd_corpus": 119000,
@@ -450,6 +520,8 @@
           "goal_name": "Child Graduation Fund",
           "target_corpus": 8500000,
           "target_year": 2037,
+          "goal_current_corpus": 619000,
+          "goal_progress_percentage": 10.0,
           "goal_expected_equity_allocation": 0.0,
           "goal_expected_debt_allocation": 0.0,
           "goal_expected_gold_allocation": 0.0,
@@ -477,7 +549,31 @@
               "ytd_corpus": 886102,
               "step_up_type": "Not Applicable",
               "step_up_percentage": 0.0,
-              "instrument_start_amount": 14000
+              "instrument_start_amount": 14000,
+              "transactions": [
+                {
+                  "instrument_id": "instrument_1",
+                  "transaction_id": "transaction_1",
+                  "transaction_date": "2022-05-06",
+                  "transaction_amount": 14000,
+                  "stamp_duty": 0.36,
+                  "nav": 100.7852,
+                  "units_purchased": 140.231,
+                  "unit_balance": 140.231,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_1",
+                  "transaction_id": "transaction_2",
+                  "transaction_date": "2022-06-06",
+                  "transaction_amount": 14000,
+                  "stamp_duty": 0.36,
+                  "nav": 100.125,
+                  "units_purchased": 140.214,
+                  "unit_balance": 280.445,
+                  "transaction_type": "BUY"
+                }
+              ]
             },
             {
               "goal_id": "goal_1",
@@ -507,6 +603,8 @@
           "goal_name": "Child PG Fund",
           "target_corpus": 10287038,
           "target_year": 2041,
+          "goal_current_corpus": 619000,
+          "goal_progress_percentage": 10.0,
           "goal_expected_equity_allocation": 0.0,
           "goal_expected_debt_allocation": 0.0,
           "goal_expected_gold_allocation": 0.0,
@@ -534,7 +632,31 @@
               "ytd_corpus": 634306,
               "step_up_type": "Not Applicable",
               "step_up_percentage": 0.0,
-              "instrument_start_amount": 10500
+              "instrument_start_amount": 10500,
+              "transactions": [
+                {
+                  "instrument_id": "instrument_3",
+                  "transaction_id": "transaction_3",
+                  "transaction_date": "2022-05-07",
+                  "transaction_amount": 10500,
+                  "stamp_duty": 0.315,
+                  "nav": 50.7852,
+                  "units_purchased": 206.731,
+                  "unit_balance": 206.731,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_3",
+                  "transaction_id": "transaction_4",
+                  "transaction_date": "2022-06-07",
+                  "transaction_amount": 10500,
+                  "stamp_duty": 0.315,
+                  "nav": 51.125,
+                  "units_purchased": 205.493,
+                  "unit_balance": 412.224,
+                  "transaction_type": "BUY"
+                }
+              ]
             },
             {
               "goal_id": "goal_2",
@@ -564,6 +686,8 @@
           "goal_name": "Retirement & Child Marriage",
           "target_corpus": 120000000,
           "target_year": 2044,
+          "goal_current_corpus": 619000,
+          "goal_progress_percentage": 10.0,
           "goal_expected_equity_allocation": 0.0,
           "goal_expected_debt_allocation": 0.0,
           "goal_expected_gold_allocation": 0.0,
@@ -623,6 +747,30 @@
                   "date": "2042-04-13",
                   "amount": 26000
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_5",
+                  "transaction_id": "transaction_5",
+                  "transaction_date": "2022-01-13",
+                  "transaction_amount": 8093,
+                  "stamp_duty": 0.2023,
+                  "nav": 30.7852,
+                  "units_purchased": 262.901,
+                  "unit_balance": 262.901,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_5",
+                  "transaction_id": "transaction_6",
+                  "transaction_date": "2022-02-13",
+                  "transaction_amount": 8093,
+                  "stamp_duty": 0.2023,
+                  "nav": 31.125,
+                  "units_purchased": 259.987,
+                  "unit_balance": 522.888,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -675,6 +823,30 @@
                   "schedule_name": "Step-up SIP Investment",
                   "date": "2042-04-13",
                   "amount": 17500
+                }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_6",
+                  "transaction_id": "transaction_7",
+                  "transaction_date": "2022-01-13",
+                  "transaction_amount": 5780,
+                  "stamp_duty": 0.1445,
+                  "nav": 20.7852,
+                  "units_purchased": 278.086,
+                  "unit_balance": 278.086,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_6",
+                  "transaction_id": "transaction_8",
+                  "transaction_date": "2022-02-13",
+                  "transaction_amount": 5780,
+                  "stamp_duty": 0.1445,
+                  "nav": 21.125,
+                  "units_purchased": 273.922,
+                  "unit_balance": 552.008,
+                  "transaction_type": "BUY"
                 }
               ]
             },
@@ -729,6 +901,30 @@
                   "date": "2042-04-10",
                   "amount": 35000
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_7",
+                  "transaction_id": "transaction_9",
+                  "transaction_date": "2022-01-10",
+                  "transaction_amount": 9249,
+                  "stamp_duty": 0.2312,
+                  "nav": 40.7852,
+                  "units_purchased": 226.789,
+                  "unit_balance": 226.789,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_7",
+                  "transaction_id": "transaction_10",
+                  "transaction_date": "2022-02-10",
+                  "transaction_amount": 9249,
+                  "stamp_duty": 0.2312,
+                  "nav": 41.125,
+                  "units_purchased": 224.997,
+                  "unit_balance": 451.786,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -781,6 +977,30 @@
                   "schedule_name": "Step-up SIP Investment",
                   "date": "2042-05-29",
                   "amount": 26500
+                }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_8",
+                  "transaction_id": "transaction_11",
+                  "transaction_date": "2022-01-29",
+                  "transaction_amount": 5500,
+                  "stamp_duty": 0.1375,
+                  "nav": 20.7852,
+                  "units_purchased": 264.643,
+                  "unit_balance": 264.643,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_8",
+                  "transaction_id": "transaction_12",
+                  "transaction_date": "2022-02-29",
+                  "transaction_amount": 5500,
+                  "stamp_duty": 0.1375,
+                  "nav": 21.125,
+                  "units_purchased": 260.389,
+                  "unit_balance": 525.032,
+                  "transaction_type": "BUY"
                 }
               ]
             },
@@ -835,6 +1055,30 @@
                   "date": "2042-04-27",
                   "amount": 26500
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_9",
+                  "transaction_id": "transaction_13",
+                  "transaction_date": "2022-01-27",
+                  "transaction_amount": 10000,
+                  "stamp_duty": 0.25,
+                  "nav": 30.7852,
+                  "units_purchased": 324.643,
+                  "unit_balance": 324.643,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_9",
+                  "transaction_id": "transaction_14",
+                  "transaction_date": "2022-02-27",
+                  "transaction_amount": 10000,
+                  "stamp_duty": 0.25,
+                  "nav": 31.125,
+                  "units_purchased": 321.389,
+                  "unit_balance": 646.032,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -887,6 +1131,30 @@
                   "schedule_name": "Step-up Investment every year",
                   "date": "2042-04-03",
                   "amount": 312000
+                }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_10",
+                  "transaction_id": "transaction_15",
+                  "transaction_date": "2022-12-03",
+                  "transaction_amount": 60000,
+                  "stamp_duty": 0.15,
+                  "nav": 50.7852,
+                  "units_purchased": 1181.17,
+                  "unit_balance": 1181.17,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_10",
+                  "transaction_id": "transaction_16",
+                  "transaction_date": "2023-12-03",
+                  "transaction_amount": 60000,
+                  "stamp_duty": 0.15,
+                  "nav": 51.125,
+                  "units_purchased": 1174.39,
+                  "unit_balance": 2355.56,
+                  "transaction_type": "BUY"
                 }
               ]
             },
@@ -1019,6 +1287,30 @@
                   "date": "2044-12-24",
                   "amount": 150000
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_11",
+                  "transaction_id": "transaction_17",
+                  "transaction_date": "2025-12-24",
+                  "transaction_amount": 93090,
+                  "stamp_duty": 0.0,
+                  "nav": 0.0,
+                  "units_purchased": 9309,
+                  "unit_balance": 9309,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_11",
+                  "transaction_id": "transaction_18",
+                  "transaction_date": "2026-12-24",
+                  "transaction_amount": 150000,
+                  "stamp_duty": 0.0,
+                  "nav": 0.0,
+                  "units_purchased": 12500,
+                  "unit_balance": 21809,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -1072,6 +1364,30 @@
                   "date": "2042-04-05",
                   "amount": 17500
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_12",
+                  "transaction_id": "transaction_19",
+                  "transaction_date": "2022-12-05",
+                  "transaction_amount": 5000,
+                  "stamp_duty": 0.0,
+                  "nav": 40.7852,
+                  "units_purchased": 122.63,
+                  "unit_balance": 122.63,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_12",
+                  "transaction_id": "transaction_20",
+                  "transaction_date": "2023-12-05",
+                  "transaction_amount": 5000,
+                  "stamp_duty": 0.0,
+                  "nav": 41.125,
+                  "units_purchased": 121.56,
+                  "unit_balance": 244.19,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -1112,7 +1428,7 @@
                 {
                   "hybrid_allocation_id": "allocation_2",
                   "allocation_type": "Debt Government",
-                  "allocation_percentage": 0.25
+                  "allocation_percentage": 0.20
                 },
                 {
                   "hybrid_allocation_id": "allocation_3",
@@ -1137,6 +1453,8 @@
           "goal_name": "Dream Home Fund",
           "target_corpus": 10264268,
           "target_year": 2033,
+          "goal_current_corpus": 619000,
+          "goal_progress_percentage": 10.0,
           "goal_expected_equity_allocation": 0.0,
           "goal_expected_debt_allocation": 0.0,
           "goal_expected_gold_allocation": 0.0,
@@ -1214,6 +1532,30 @@
                   "date": "2032-06-27",
                   "amount": 24000
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_15",
+                  "transaction_id": "transaction_21",
+                  "transaction_date": "2022-05-06",
+                  "transaction_amount": 7200,
+                  "stamp_duty": 0.36,
+                  "nav": 100.7852,
+                  "units_purchased": 140.231,
+                  "unit_balance": 140.231,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_15",
+                  "transaction_id": "transaction_22",
+                  "transaction_date": "2022-06-06",
+                  "transaction_amount": 7200,
+                  "stamp_duty": 0.36,
+                  "nav": 100.125,
+                  "units_purchased": 140.214,
+                  "unit_balance": 280.445,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -1285,6 +1627,30 @@
                   "date": "2032-06-13",
                   "amount": 24000
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_16",
+                  "transaction_id": "transaction_23",
+                  "transaction_date": "2022-05-13",
+                  "transaction_amount": 10800,
+                  "stamp_duty": 0.54,
+                  "nav": 150.7852,
+                  "units_purchased": 71.598,
+                  "unit_balance": 71.598,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_16",
+                  "transaction_id": "transaction_24",
+                  "transaction_date": "2022-06-13",
+                  "transaction_amount": 10800,
+                  "stamp_duty": 0.54,
+                  "nav": 151.125,
+                  "units_purchased": 71.457,
+                  "unit_balance": 143.055,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -1350,6 +1716,30 @@
                   "date": "2032-06-13",
                   "amount": 19500
                 }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_17",
+                  "transaction_id": "transaction_25",
+                  "transaction_date": "2022-05-13",
+                  "transaction_amount": 12500,
+                  "stamp_duty": 0.625,
+                  "nav": 120.7852,
+                  "units_purchased": 103.44,
+                  "unit_balance": 103.44,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_17",
+                  "transaction_id": "transaction_26",
+                  "transaction_date": "2022-06-13",
+                  "transaction_amount": 12500,
+                  "stamp_duty": 0.625,
+                  "nav": 121.125,
+                  "units_purchased": 103.28,
+                  "unit_balance": 206.72,
+                  "transaction_type": "BUY"
+                }
               ]
             },
             {
@@ -1408,6 +1798,30 @@
                   "schedule_name": "Step-up SIP Investment",
                   "date": "2032-06-27",
                   "amount": 12000
+                }
+              ],
+              "transactions": [
+                {
+                  "instrument_id": "instrument_18",
+                  "transaction_id": "transaction_27",
+                  "transaction_date": "2022-04-27",
+                  "transaction_amount": 7500,
+                  "stamp_duty": 0.1875,
+                  "nav": 80.7852,
+                  "units_purchased": 92.91,
+                  "unit_balance": 92.91,
+                  "transaction_type": "BUY"
+                },
+                {
+                  "instrument_id": "instrument_18",
+                  "transaction_id": "transaction_28",
+                  "transaction_date": "2022-06-27",
+                  "transaction_amount": 7500,
+                  "stamp_duty": 0.1875,
+                  "nav": 81.125,
+                  "units_purchased": 92.59,
+                  "unit_balance": 185.5,
+                  "transaction_type": "BUY"
                 }
               ]
             }

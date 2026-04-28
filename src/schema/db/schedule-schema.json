@@ -4,27 +4,42 @@
     "title": "Investment Schedule",
     "type": "object",
     "properties": {
+        "instrument_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",
+            "format": "uuid",
+            "readOnly": true
+        },
         "schedule_id": {
             "type": "string",
             "description": "Primary Key for database (UUID).",  
-            "format": "uuid"
+            "format": "uuid",
+            "readOnly": true
         },
         "schedule_name": {
             "type": "string",
             "title": "Schedule Name",
-            "description": "Name of the investment schedule."
+            "description": "Name of the investment schedule.",
+            "writeOnly": false,
+            "minLength": 1,
+            "maxLength": 100,
+            "ui_type": "text"
         },
         "date": {
             "type": "string",
             "title": "Date",
             "description": "Date of the investment schedule.",
-            "format": "date"
+            "format": "date",
+            "writeOnly": false,
+            "ui_type": "date"
         },
         "amount": {
             "type": "number",
             "title": "Amount",
-            "description": "Amount of the investment schedule.",
-            "minimum": 0
+            "description": "Amount of investment at this schedule.",
+            "minimum": 0,
+            "writeOnly": false,
+            "ui_type": "number"
         }
     },
     "required": [

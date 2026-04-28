@@ -7,19 +7,23 @@
         "instrument_id": {
             "type": "string",
             "description": "Primary Key for database (UUID).",
-            "format": "uuid"
+            "format": "uuid",
+            "readOnly": true
         },
         "goal_id": {
             "type": "string",
             "description": "ID of the goal to which the instrument belongs.",
-            "format": "uuid"
+            "format": "uuid",
+            "readOnly": true
         },
         "instrument_name": {
             "type": "string",
             "title": "Instrument Name",
             "description": "Name of the investment instrument.",
+            "writeOnly": false,
             "minLength": 1,
-            "maxLength": 100
+            "maxLength": 100,
+            "ui_type": "text"
         },
         "instrument_type": {
             "title": "Instrument Type",
@@ -31,7 +35,9 @@
                 "Stock Option",
                 "Fixed Deposit",
                 "Savings Account"
-            ]
+            ],
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "instrument_status": {
             "title": "Instrument Status",
@@ -40,34 +46,42 @@
                 "Active",
                 "Paused",
                 "Stopped"
-            ]
+            ],
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "instrument_tax_liability": {
             "type": "number",
             "title": "Instrument Tax Liability",
             "description": "Tax liability associated with the investment instrument.",
-            "minimum": 0
+            "minimum": 0,
+            "readOnly": true
         },
         "instrument_tax_liability_now": {
             "type": "number",
             "title": "Instrument Tax Liability",
             "description": "Tax liability associated with the investment instrument.",
-            "minimum": 0
+            "minimum": 0,
+            "readOnly": true
         },
         "fund_category": {
             "type": "string",
             "title": "Fund Category",
             "description": "Category of the fund. For example, Flexicap, Large Cap, Mid Cap etc. Applicable for only Mutual Funds.",
             "minLength": 1,
-            "maxLength": 100
+            "maxLength": 100,
+            "writeOnly": false,
+            "ui_type": "text"
         },
         "frequency": {
             "title": "Frequency",
             "description": "Frequency of the investment.",
             "enum": [
                 "Monthly",
-                "Yearly"
-            ]
+                "Annually"
+            ],
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "asset_type": {
             "title": "Asset Type",
@@ -77,7 +91,9 @@
                 "Debt",
                 "Hybrid",
                 "Gold"
-            ]
+            ],
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "asset_sub_type": {
             "title": "Asset Sub-Type",
@@ -92,49 +108,66 @@
                 "Debt FixedDeposit",
                 "Hybrid India",
                 "Gold"
-            ]
+            ],
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "hybrid_allocation": {
             "type": "array",
             "items": {
                 "$ref": "hybrid-allocation-schema.json"
-            }
+            },
+            "description": "Allocation breakdown for hybrid assets. Applicable only if asset_type is Hybrid.",
+            "writeOnly": false
         },
         "start_date": {
             "type": "string",
             "title": "Start Date",
             "description": "Date when the investment was started.",
-            "format": "date"
+            "format": "date",
+            "writeOnly": false,
+            "ui_type": "date"
         },
         "end_date": {
             "type": "string",
             "title": "End Date",
             "description": "Date when the investment ends.",
-            "format": "date"
+            "format": "date",
+            "writeOnly": false,
+            "ui_type": "date"
         },
         "expected_roi": {
             "type": "number",
             "title": "Expected ROI",
             "description": "Expected rate of return for the investment instrument.",
-            "default": 0.12
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "writeOnly": false,
+            "default": 0.12,
+            "ui_type": "number"
         },
         "expected_corpus": {
             "type": "number",
             "title": "Expected Corpus",
             "description": "Expected corpus value for the investment instrument.",
-            "minimum": 0.0
+            "minimum": 0.0,
+            "readOnly": true
         },
         "ytd_corpus": {
             "type": "number",
             "title": "YTD Corpus",
             "description": "Year-to-date corpus value for the investment instrument.",
-            "minimum": 0.0
+            "minimum": 0.0,
+            "writeOnly": false,
+            "ui_type": "number"
         },
         "instrument_start_amount": {
             "type": "number",
             "title": "Instrument Start Amount",
             "description": "Initial amount invested in the instrument.",
-            "minimum": 0.0
+            "minimum": 0.0,
+            "writeOnly": false,
+            "ui_type": "number"
         },
         "step_up_type": {
             "title": "Step-Up Type",
@@ -144,19 +177,32 @@
                 "Manual",
                 "AutomaticYoY",
                 "Not Applicable"
-            ]
+            ],
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "step_up_percentage": {
             "type": "number",
             "title": "Step-Up Percentage",
             "description": "Percentage by which the investment amount will increase. Only applicable for AutomaticYoY ste-up type.",
-            "minimum": 0.1
+            "minimum": 0.1,
+            "maximum": 1.0,
+            "writeOnly": false,
+            "ui_type": "slider"
         },
         "investment_schedule": {
             "type": "array",
             "items": {
                 "$ref": "schedule-schema.json"
-            }
+            },
+            "writeOnly": false
+        },
+        "transactions": {
+            "type": "array",
+            "items": {
+                "$ref": "transaction-schema.json"
+            },
+            "readOnly": true
         }
     },
     "required": [

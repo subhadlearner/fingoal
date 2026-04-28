@@ -4,9 +4,17 @@
     "title": "Hybrid Allocation Breakdown",
     "type": "object",
     "properties": {
+        "instrument_id": {
+            "type": "string",
+            "description": "Primary Key for database (UUID).",
+            "format": "uuid",
+            "readOnly": true
+        },
         "hybrid_allocation_id": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "description": "Primary Key for database (UUID).",
+            "readOnly": true
         },
         "allocation_type": {
             "enum": [
@@ -19,15 +27,23 @@
                 "Debt FixedDeposit",
                 "Hybrid India",
                 "Gold"
-            ]
+            ],
+            "description": "Type of the allocation.",
+            "writeOnly": false,
+            "ui_type": "dropdown"
         },
         "allocation_percentage": {
             "type": "number",
             "minimum": 0,
-            "maximum": 100
+            "maximum": 100,
+            "description": "Percentage of the allocation.",
+            "writeOnly": false,
+            "ui_type": "text"
         }
     },
     "required": [
+        "hybrid_allocation_id",
+        "instrument_id",
         "allocation_type",
         "allocation_percentage"
     ]
