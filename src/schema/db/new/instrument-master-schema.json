@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/instrument-master-schema.json",
+  "title": "Instrument Master",
+  "description": "Reference data for known instruments, schemes, or securities.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "instrument_master_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "instrument_code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "instrument_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 150
+    },
+    "instrument_type": {
+      "type": "string",
+      "enum": [
+        "mutual_fund",
+        "stock",
+        "etf",
+        "epf",
+        "nps",
+        "ppf",
+        "ssy",
+        "fixed_deposit",
+        "savings_account",
+        "gold",
+        "other"
+      ]
+    },
+    "asset_type": {
+      "type": "string",
+      "enum": [
+        "equity",
+        "debt",
+        "gold",
+        "hybrid",
+        "cash",
+        "other"
+      ]
+    },
+    "asset_sub_type": {
+      "type": "string",
+      "enum": [
+        "large_cap",
+        "mid_cap",
+        "small_cap",
+        "multi_cap",
+        "flexi_cap",
+        "international_equity",
+        "government_debt",
+        "corporate_debt",
+        "provident_fund",
+        "retirement_hybrid",
+        "liquid_cash",
+        "physical_gold",
+        "gold_etf",
+        "other"
+      ]
+    },
+    "provider_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 120
+    },
+    "benchmark_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 120
+    },
+    "expense_ratio": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "last_refreshed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "instrument_master_id",
+    "instrument_code",
+    "instrument_name",
+    "instrument_type",
+    "asset_type",
+    "asset_sub_type",
+    "is_active"
+  ]
+}

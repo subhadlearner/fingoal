@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/simulation-year-snapshot-schema.json",
+  "title": "Simulation Year Snapshot",
+  "description": "Year-by-year output for a simulation run.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "simulation_year_snapshot_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "simulation_run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 2024
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "is_retired": {
+      "type": "boolean"
+    },
+    "total_income": {
+      "type": "number"
+    },
+    "total_expenses": {
+      "type": "number"
+    },
+    "annual_surplus": {
+      "type": "number",
+      "description": "Can be negative if projected expenses exceed income."
+    },
+    "planned_investment_contribution": {
+      "type": "number",
+      "minimum": 0
+    },
+    "opening_net_worth": {
+      "type": "number",
+      "minimum": 0
+    },
+    "investment_growth": {
+      "type": "number"
+    },
+    "closing_net_worth": {
+      "type": "number",
+      "minimum": 0
+    },
+    "goal_funding_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "goal_readiness_flag": {
+      "type": "string",
+      "enum": [
+        "green",
+        "amber",
+        "red"
+      ]
+    },
+    "retirement_corpus_target": {
+      "type": "number",
+      "minimum": 0
+    },
+    "retirement_gap": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "simulation_year_snapshot_id",
+    "simulation_run_id",
+    "user_id",
+    "year",
+    "age",
+    "is_retired",
+    "total_income",
+    "total_expenses",
+    "annual_surplus",
+    "planned_investment_contribution",
+    "opening_net_worth",
+    "investment_growth",
+    "closing_net_worth",
+    "goal_funding_ratio",
+    "goal_readiness_flag",
+    "retirement_corpus_target",
+    "retirement_gap"
+  ]
+}

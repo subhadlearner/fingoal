@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/simulation-assumption-schema.json",
+  "title": "Simulation Assumption",
+  "description": "Explicit assumption set used by a simulation run.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "simulation_assumption_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "assumption_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "scenario_type": {
+      "type": "string",
+      "enum": [
+        "conservative",
+        "base",
+        "optimistic",
+        "custom"
+      ]
+    },
+    "salary_growth_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "expense_inflation_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "general_inflation_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "equity_return_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "debt_return_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "gold_return_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "cash_return_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 500
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "simulation_assumption_id",
+    "user_id",
+    "assumption_name",
+    "scenario_type",
+    "salary_growth_rate",
+    "expense_inflation_rate",
+    "general_inflation_rate",
+    "equity_return_rate",
+    "debt_return_rate",
+    "gold_return_rate",
+    "cash_return_rate",
+    "created_at",
+    "updated_at"
+  ]
+}

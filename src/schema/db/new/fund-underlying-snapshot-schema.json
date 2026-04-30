@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/fund-underlying-snapshot-schema.json",
+  "title": "Fund Underlying Snapshot",
+  "description": "Snapshot of a mutual fund or ETF underlying allocation used for goal-level exposure analysis.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "fund_underlying_snapshot_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "instrument_master_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "as_of_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "large_cap_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "mid_cap_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "small_cap_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "international_equity_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "debt_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "gold_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "cash_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "top_holdings": {
+      "type": "array",
+      "description": "Optional high-level list of top underlying holdings for display or analysis.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "holding_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "holding_ticker": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 40
+          },
+          "allocation_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "holding_name",
+          "allocation_percentage"
+        ]
+      }
+    }
+  },
+  "required": [
+    "fund_underlying_snapshot_id",
+    "instrument_master_id",
+    "as_of_date",
+    "large_cap_percentage",
+    "mid_cap_percentage",
+    "small_cap_percentage",
+    "international_equity_percentage",
+    "debt_percentage",
+    "gold_percentage",
+    "cash_percentage"
+  ]
+}

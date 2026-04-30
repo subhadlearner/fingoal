@@ -1,0 +1,180 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/investment-schema.json",
+  "title": "Investment",
+  "description": "Investment instrument used for current corpus tracking and future projection.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "investment_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "investment_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 150
+    },
+    "instrument_type": {
+      "type": "string",
+      "enum": [
+        "mutual_fund",
+        "government_scheme",
+        "etf",
+        "stock_option",
+        "fixed_deposit",
+        "savings_account",
+        "stock",
+        "gold",
+        "other"
+      ]
+    },
+    "asset_type": {
+      "type": "string",
+      "enum": ["equity", "debt", "hybrid", "gold", "cash", "other"]
+    },
+    "asset_sub_type": {
+      "type": "string",
+      "enum": [
+        "equity_india",
+        "equity_us",
+        "equity_international_except_us",
+        "debt_government",
+        "debt_corporate",
+        "debt_savings_account",
+        "debt_fixed_deposit",
+        "hybrid_india",
+        "hybrid_government",
+        "gold",
+        "cash",
+        "other"
+      ]
+    },
+    "instrument_status": {
+      "type": "string",
+      "enum": ["active", "paused", "stopped", "closed"],
+      "default": "active"
+    },
+    "fund_category": {
+      "type": ["string", "null"],
+      "maxLength": 120
+    },
+    "provider_name": {
+      "type": ["string", "null"],
+      "maxLength": 120
+    },
+    "folio_or_account_reference": {
+      "type": ["string", "null"],
+      "maxLength": 120
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "expected_roi_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "current_corpus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "current_corpus_source": {
+      "type": "string",
+      "enum": ["manual", "cas_upload", "transaction_derived", "system_calculated"]
+    },
+    "contribution_frequency": {
+      "type": "string",
+      "enum": ["monthly", "annually", "not_applicable"]
+    },
+    "contribution_amount": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0
+    },
+    "step_up_type": {
+      "type": "string",
+      "enum": ["salary_linked", "manual", "automatic_yoy", "not_applicable"],
+      "default": "not_applicable"
+    },
+    "step_up_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0
+    },
+    "projected_corpus": {
+      "type": "number",
+      "minimum": 0,
+      "description": "System-calculated expected corpus at end date."
+    },
+    "hybrid_allocation": {
+      "type": "array",
+      "description": "Required when asset_type is hybrid.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "allocation_type": {
+            "type": "string",
+            "enum": [
+              "equity_india",
+              "equity_us",
+              "equity_international_except_us",
+              "debt_government",
+              "debt_corporate",
+              "gold",
+              "cash",
+              "other"
+            ]
+          },
+          "allocation_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": ["allocation_type", "allocation_percentage"]
+      },
+      "default": []
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "investment_id",
+    "user_id",
+    "investment_name",
+    "instrument_type",
+    "asset_type",
+    "asset_sub_type",
+    "instrument_status",
+    "start_date",
+    "expected_roi_percentage",
+    "current_corpus",
+    "current_corpus_source",
+    "contribution_frequency",
+    "contribution_amount",
+    "step_up_type",
+    "step_up_percentage",
+    "projected_corpus",
+    "hybrid_allocation",
+    "created_at",
+    "updated_at"
+  ]
+}

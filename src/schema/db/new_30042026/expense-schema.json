@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/expense-schema.json",
+  "title": "Expense",
+  "description": "Simple monthly expense projection configuration for Phase-1.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "expense_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "expense_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "default": "Monthly Expenses"
+    },
+    "monthly_expense_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "annual_expense_increase_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "projection_start_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "projection_end_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "paused", "closed"],
+      "default": "active"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "expense_id",
+    "user_id",
+    "expense_name",
+    "monthly_expense_amount",
+    "annual_expense_increase_percentage",
+    "projection_start_month",
+    "projection_end_month",
+    "status",
+    "created_at",
+    "updated_at"
+  ]
+}

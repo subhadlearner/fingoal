@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/income-month-schema.json",
+  "title": "Income Month",
+  "description": "Persisted monthly salary projection record.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "income_month_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "income_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1900
+    },
+    "month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "month_key": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "salary_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "bonus_amount": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0
+    },
+    "total_income_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "applied_salary_hike_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "source": {
+      "type": "string",
+      "enum": ["simulation", "user_override"],
+      "description": "The latest source of this monthly value."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "income_month_id",
+    "user_id",
+    "income_id",
+    "year",
+    "month",
+    "month_key",
+    "salary_amount",
+    "bonus_amount",
+    "total_income_amount",
+    "applied_salary_hike_percentage",
+    "source",
+    "created_at",
+    "updated_at"
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/income-stream-schema.json",
+  "title": "Income Stream",
+  "description": "Recurring or one-time income source used in planning and simulation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "income_stream_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stream_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "income_type": {
+      "type": "string",
+      "enum": [
+        "salary",
+        "bonus",
+        "business",
+        "freelance",
+        "rental",
+        "interest",
+        "dividend",
+        "pension",
+        "other"
+      ]
+    },
+    "calculation_mode": {
+      "type": "string",
+      "enum": [
+        "simple",
+        "detailed"
+      ],
+      "description": "Simple mode uses net/in-hand values. Detailed mode allows richer payroll-style inputs."
+    },
+    "frequency": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "half_yearly",
+        "yearly",
+        "one_time"
+      ]
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Primary recurring amount used for the stream. In simple mode this is typically in-hand income."
+    },
+    "gross_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Optional gross amount for detailed salary modeling."
+    },
+    "net_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Optional explicit net amount if the user knows it."
+    },
+    "annual_growth_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "growth_model": {
+      "type": "string",
+      "enum": [
+        "fixed_rate",
+        "step_up_schedule",
+        "none"
+      ]
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "taxable": {
+      "type": "boolean"
+    },
+    "linked_retirement_date_mode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "stop_at_retirement"
+      ],
+      "description": "Whether the stream should end automatically at retirement."
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 500
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "income_stream_id",
+    "user_id",
+    "stream_name",
+    "income_type",
+    "calculation_mode",
+    "frequency",
+    "amount",
+    "annual_growth_rate",
+    "growth_model",
+    "start_date",
+    "taxable",
+    "linked_retirement_date_mode",
+    "is_active",
+    "created_at",
+    "updated_at"
+  ]
+}

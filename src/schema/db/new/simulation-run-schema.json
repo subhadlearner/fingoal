@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/simulation-run-schema.json",
+  "title": "Simulation Run",
+  "description": "Metadata and summary for a deterministic or scenario-based simulation execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "simulation_run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "simulation_assumption_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "run_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "run_type": {
+      "type": "string",
+      "enum": [
+        "retirement_projection",
+        "goal_projection",
+        "full_plan_projection",
+        "what_if"
+      ]
+    },
+    "scenario_type": {
+      "type": "string",
+      "enum": [
+        "conservative",
+        "base",
+        "optimistic",
+        "custom"
+      ]
+    },
+    "projection_start_year": {
+      "type": "integer",
+      "minimum": 2024
+    },
+    "projection_end_year": {
+      "type": "integer",
+      "minimum": 2024
+    },
+    "retirement_year": {
+      "type": "integer",
+      "minimum": 2024
+    },
+    "opening_net_worth": {
+      "type": "number",
+      "minimum": 0
+    },
+    "projected_retirement_corpus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "required_retirement_corpus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "goal_funding_ratio": {
+      "type": "number",
+      "minimum": 0
+    },
+    "retirement_readiness_flag": {
+      "type": "string",
+      "enum": [
+        "green",
+        "amber",
+        "red"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "completed",
+        "failed"
+      ]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "simulation_run_id",
+    "user_id",
+    "simulation_assumption_id",
+    "run_name",
+    "run_type",
+    "scenario_type",
+    "projection_start_year",
+    "projection_end_year",
+    "retirement_year",
+    "opening_net_worth",
+    "projected_retirement_corpus",
+    "required_retirement_corpus",
+    "goal_funding_ratio",
+    "retirement_readiness_flag",
+    "status",
+    "generated_at"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/user-settings-schema.json",
+  "title": "User Settings",
+  "description": "User-level assumptions used to generate Phase-1 projections.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "settings_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "retirement_age": {
+      "type": "integer",
+      "minimum": 35,
+      "maximum": 100
+    },
+    "retirement_month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12,
+      "description": "Month in which salary and expense projection should end for retirement simulations."
+    },
+    "default_salary_hike_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "default_expense_increase_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "default_goal_inflation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "risk_profile": {
+      "type": "string",
+      "enum": ["conservative", "moderate", "aggressive"],
+      "default": "moderate"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "settings_id",
+    "user_id",
+    "retirement_age",
+    "retirement_month",
+    "default_salary_hike_percentage",
+    "default_expense_increase_percentage",
+    "default_goal_inflation_percentage",
+    "risk_profile",
+    "created_at",
+    "updated_at"
+  ]
+}

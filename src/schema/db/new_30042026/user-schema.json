@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/user-schema.json",
+  "title": "User",
+  "description": "Application user profile for the Phase-1 MVP.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "System-generated unique identifier for the user."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Primary sign-in email address."
+    },
+    "full_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date"
+    },
+    "country_code": {
+      "type": "string",
+      "enum": ["IN"],
+      "default": "IN"
+    },
+    "base_currency": {
+      "type": "string",
+      "enum": ["INR"],
+      "default": "INR"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id",
+    "email",
+    "full_name",
+    "date_of_birth",
+    "country_code",
+    "base_currency",
+    "created_at",
+    "updated_at"
+  ]
+}

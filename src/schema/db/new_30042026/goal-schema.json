@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/goal-schema.json",
+  "title": "Goal",
+  "description": "Financial goal created by the user. Phase-1 supports unlimited goals.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "goal_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goal_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "goal_category": {
+      "type": "string",
+      "enum": [
+        "retirement",
+        "emergency_fund",
+        "home_purchase",
+        "education",
+        "marriage",
+        "vacation",
+        "vehicle",
+        "wealth_creation",
+        "other"
+      ]
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "target_corpus": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Target corpus required by the target date."
+    },
+    "goal_current_corpus": {
+      "type": "number",
+      "minimum": 0,
+      "description": "System-calculated current corpus allocated to this goal."
+    },
+    "goal_projected_corpus": {
+      "type": "number",
+      "minimum": 0,
+      "description": "System-calculated projected corpus allocated to this goal at target date."
+    },
+    "goal_progress_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "description": "System-calculated progress against target corpus."
+    },
+    "goal_expected_equity_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "goal_expected_debt_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "goal_expected_gold_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "goal_expected_other_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0
+    },
+    "goal_current_equity_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "goal_current_debt_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "goal_current_gold_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "goal_current_other_allocation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "paused", "completed", "cancelled"],
+      "default": "active"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "goal_id",
+    "user_id",
+    "goal_name",
+    "goal_category",
+    "target_date",
+    "target_corpus",
+    "goal_current_corpus",
+    "goal_projected_corpus",
+    "goal_progress_percentage",
+    "goal_expected_equity_allocation",
+    "goal_expected_debt_allocation",
+    "goal_expected_gold_allocation",
+    "goal_expected_other_allocation",
+    "goal_current_equity_allocation",
+    "goal_current_debt_allocation",
+    "goal_current_gold_allocation",
+    "goal_current_other_allocation",
+    "status",
+    "created_at",
+    "updated_at"
+  ]
+}

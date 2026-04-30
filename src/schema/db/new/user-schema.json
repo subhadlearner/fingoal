@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/user-schema.json",
+  "title": "User",
+  "description": "Identity and profile details for a FinGoal user.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "System-generated unique identifier for the user."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Primary sign-in email for the user."
+    },
+    "full_name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120,
+      "description": "Full name of the user."
+    },
+    "phone_e164": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\+?[1-9]\\d{1,14}$",
+      "description": "Optional phone number in E.164 format."
+    },
+    "pan": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Z]{5}[0-9]{4}[A-Z]$",
+      "description": "Optional PAN number."
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of birth of the user."
+    },
+    "marital_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "single",
+        "married",
+        "divorced",
+        "widowed",
+        null
+      ],
+      "description": "Optional marital status."
+    },
+    "occupation": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 120,
+      "description": "Optional occupation."
+    },
+    "country_code": {
+      "type": "string",
+      "default": "IN",
+      "enum": [
+        "IN"
+      ],
+      "description": "Country context for tax, currency, and regulatory defaults."
+    },
+    "base_currency": {
+      "type": "string",
+      "default": "INR",
+      "enum": [
+        "INR"
+      ],
+      "description": "Base currency used for calculations and display."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the user was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the user was last updated."
+    }
+  },
+  "required": [
+    "user_id",
+    "email",
+    "full_name",
+    "date_of_birth",
+    "country_code",
+    "base_currency",
+    "created_at",
+    "updated_at"
+  ]
+}

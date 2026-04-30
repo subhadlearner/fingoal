@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinGoal Phase-1 Wireframes</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <div class="brand-mark">F</div>
+          <div>
+            <strong>FinGoal</strong>
+            <span>Phase-1 MVP</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-target="dashboard" type="button">Dashboard</button>
+          <button class="nav-item" data-target="investments" type="button">Investments</button>
+          <button class="nav-item" data-target="goals" type="button">Goals</button>
+          <button class="nav-item" data-target="simulation" type="button">Simulation</button>
+          <button class="nav-item" data-target="settings" type="button">Settings</button>
+        </nav>
+
+        <div class="sidebar-note">
+          <span>Prototype mode</span>
+          <strong>Static sample data</strong>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Clickable wireframe</p>
+            <h1 id="screen-title">First-time setup</h1>
+          </div>
+          <button class="ghost mobile-menu" type="button" data-action="toggle-nav">Menu</button>
+        </header>
+
+        <section id="onboarding" class="screen active" aria-labelledby="screen-title">
+          <div class="wizard-shell">
+            <div class="wizard-head">
+              <div>
+                <p class="eyebrow" id="step-eyebrow">Step 1 of 7</p>
+                <h2 id="step-title">Register with email OTP</h2>
+              </div>
+              <div class="mobile-progress">
+                <span id="mobile-step-current">1</span>/<span id="mobile-step-total">7</span>
+              </div>
+            </div>
+
+            <div class="stepper" aria-label="Onboarding progress">
+              <button class="step-pill active" data-step="0" type="button">Register</button>
+              <button class="step-pill" data-step="1" type="button">Settings</button>
+              <button class="step-pill" data-step="2" type="button">Investments</button>
+              <button class="step-pill" data-step="3" type="button">Goals</button>
+              <button class="step-pill" data-step="4" type="button">Mapping</button>
+              <button class="step-pill" data-step="5" type="button">Simulation</button>
+              <button class="step-pill" data-step="6" type="button">Dashboard</button>
+            </div>
+
+            <div class="wizard-card">
+              <div class="wizard-step active" data-step-panel="0">
+                <div class="split-grid">
+                  <div class="form-panel">
+                    <label>Full name
+                      <input value="Subhadeep Majumder" />
+                    </label>
+                    <label>Email address
+                      <input type="email" value="subhadeep@example.com" />
+                    </label>
+                    <label>Phone number
+                      <input type="tel" value="+91 98765 43210" />
+                    </label>
+                    <button class="primary" type="button" data-action="send-otp">Send OTP</button>
+                    <label>Enter OTP
+                      <input inputmode="numeric" value="248913" />
+                    </label>
+                    <button class="secondary" type="button" data-action="verify-otp">Register and continue</button>
+                  </div>
+                  <div class="insight-panel">
+                    <h3>First-time registration</h3>
+                    <p>New users register once with email OTP, then continue into settings, investments, goals, mapping, and simulation.</p>
+                    <div class="status-list">
+                      <span>Profile created</span>
+                      <span>Email captured</span>
+                      <span>OTP verified</span>
+                      <span>Setup pending</span>
+                    </div>
+                    <div class="returning-user">
+                      <strong>Returning user path</strong>
+                      <p>After registration is complete, future email OTP logins should land directly on the dashboard.</p>
+                      <button class="ghost" type="button" data-action="returning-user">Preview returning-user landing</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step-panel="1">
+                <div class="settings-sections">
+                  <section class="settings-group">
+                    <h3>Planning profile</h3>
+                    <div class="form-grid compact">
+                      <label>Country
+                        <select><option selected>India</option></select>
+                      </label>
+                      <label>Currency
+                        <select><option selected>INR</option></select>
+                      </label>
+                      <label>Date of birth
+                        <input type="date" value="1987-08-14" />
+                      </label>
+                      <label>Retirement age
+                        <input type="number" value="60" />
+                      </label>
+                      <label>Life expectancy age
+                        <input type="text" value="85" />
+                      </label>
+                      <label>Retirement month
+                        <select>
+                          <option>March</option>
+                          <option selected>December</option>
+                        </select>
+                      </label>
+                      <label>Monthly expense baseline
+                        <input type="text" value="₹1,45,000" />
+                      </label>
+                      <label>Salary hike YoY
+                        <input type="text" value="8%" />
+                      </label>
+                      <label>Expense increase YoY
+                        <input type="text" value="6%" />
+                      </label>
+                      <label>Expected inflation
+                        <input type="text" value="6%" />
+                      </label>
+                      <label>Income tax regime
+                        <select>
+                          <option>Old</option>
+                          <option selected>New</option>
+                        </select>
+                      </label>
+                      <label>Risk profile
+                        <select>
+                          <option>Conservative</option>
+                          <option selected>Moderate</option>
+                          <option>Aggressive</option>
+                        </select>
+                      </label>
+                    </div>
+                  </section>
+
+                  <section class="settings-group">
+                    <h3>Salary components</h3>
+                    <div class="form-grid compact">
+                      <label>Current base salary component
+                        <input type="text" value="₹1,75,000" />
+                      </label>
+                      <label>Current HRA salary component
+                        <input type="text" value="₹70,000" />
+                      </label>
+                      <label>Current flexi bucket salary component
+                        <input type="text" value="₹1,05,000" />
+                      </label>
+                      <label>Percentage of basic opted for NPS
+                        <select>
+                          <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option>
+                          <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+                          <option selected>10</option><option>11</option><option>12</option><option>13</option><option>14</option>
+                        </select>
+                      </label>
+                      <div class="readonly-field">
+                        <span>Percentage of basic opted for EPF</span>
+                        <strong>12</strong>
+                      </div>
+                      <label>Percentage of basic opted for VPF
+                        <input type="text" value="0" />
+                      </label>
+                      <label>Company paying for medical and insurance
+                        <input type="text" value="₹18,000" />
+                      </label>
+                      <label>Gratuity
+                        <input type="text" value="₹8,400" />
+                      </label>
+                      <label>Percentage of gross salary given as bonus
+                        <input type="text" value="12%" />
+                      </label>
+                      <label>Bonus payout month
+                        <select>
+                          <option>January</option><option>February</option><option selected>March</option><option>April</option>
+                          <option>May</option><option>June</option><option>July</option><option>August</option>
+                          <option>September</option><option>October</option><option>November</option><option>December</option>
+                        </select>
+                      </label>
+                      <label>Salary pay day
+                        <select>
+                          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                          <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+                          <option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+                          <option>21</option><option>22</option><option>23</option><option>24</option><option selected>25</option>
+                          <option>26</option><option>27</option><option>28</option><option>29</option><option>30</option><option>31</option>
+                        </select>
+                      </label>
+                    </div>
+                  </section>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step-panel="2">
+                <div class="toolbar">
+                  <div>
+                    <h3>Investment details</h3>
+                    <p>Add one instrument at a time. Mutual funds require CAS upload first; other types use the same investment detail form.</p>
+                  </div>
+                  <button class="secondary" type="button" data-action="add-investment">Add another investment</button>
+                </div>
+
+                <div class="investment-layout">
+                  <div class="investment-form">
+                    <label>Instrument type
+                      <select id="instrument-type">
+                        <option selected>Mutual Fund</option>
+                        <option>Government Scheme</option>
+                        <option>ETF</option>
+                        <option>Stock Option</option>
+                        <option>Fixed Deposit</option>
+                        <option>Savings Account</option>
+                      </select>
+                    </label>
+
+                    <div class="cas-card" id="cas-card">
+                      <div class="drop-zone" id="cas-drop-zone">
+                        <strong>Upload CAS first</strong>
+                        <span>Mutual fund instrument names unlock after upload</span>
+                        <button class="secondary" type="button" data-action="mock-cas-upload">Use sample CAS</button>
+                      </div>
+                    </div>
+
+                    <div id="investment-detail-form" class="form-grid compact gated-form">
+                      <label id="instrument-name-select-label">Instrument name
+                        <select id="instrument-name-select"></select>
+                      </label>
+                      <label id="instrument-name-text-label">Instrument name
+                        <input id="instrument-name-text" value="Company ESOP 2026" />
+                      </label>
+                      <label>Instrument status
+                        <select>
+                          <option selected>Active</option>
+                          <option>Paused</option>
+                          <option>Stopped</option>
+                        </select>
+                      </label>
+                      <label id="fund-category-label">Fund category
+                        <select>
+                          <option selected>LargeCap</option>
+                          <option>MidCap</option>
+                          <option>SmallCap</option>
+                          <option>FlexiCap</option>
+                          <option>Liquid</option>
+                          <option>LargeCap Index</option>
+                          <option>Large and Mid cap</option>
+                        </select>
+                      </label>
+                      <label>Contribution frequency
+                        <select id="investment-contribution-frequency">
+                          <option selected>Monthly</option>
+                          <option>Annually</option>
+                        </select>
+                      </label>
+                      <label>Asset type
+                        <select id="investment-asset-type">
+                          <option selected>Equity</option>
+                          <option>Debt</option>
+                          <option>Gold</option>
+                        </select>
+                      </label>
+                      <label>Start date
+                        <input type="date" value="2026-05-01" />
+                      </label>
+                      <label>End date
+                        <input type="date" value="2047-12-31" />
+                      </label>
+                      <label>Expected ROI
+                        <input id="investment-expected-roi" value="12%" />
+                      </label>
+                      <label>Current corpus
+                        <input id="investment-current-corpus" value="₹12,40,000" />
+                      </label>
+                      <label>Investment start amount
+                        <input value="₹25,000" />
+                      </label>
+                      <label>Step-up type
+                        <select id="step-up-type">
+                          <option>SalaryLinked</option>
+                          <option selected>Manual</option>
+                          <option>AutomaticYoY</option>
+                          <option>Not Applicable</option>
+                        </select>
+                      </label>
+                      <label id="step-up-percentage-label">Step-up percentage
+                        <input value="10%" />
+                      </label>
+                    </div>
+
+                    <div id="manual-step-up-panel" class="step-up-panel">
+                      <h4>Manual step-up schedule</h4>
+                      <div class="form-grid compact">
+                        <label>Schedule name
+                          <input value="Annual SIP step-up" />
+                        </label>
+                        <label>Schedule date
+                          <input type="date" value="2027-04-01" />
+                        </label>
+                        <label>Amount
+                          <input value="₹30,000" />
+                        </label>
+                      </div>
+                      <button class="secondary" type="button">Add schedule row</button>
+                    </div>
+                    <div class="form-actions" id="investment-form-actions">
+                      <button class="primary" type="button" data-action="save-investment">Save instrument</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="available-types" id="available-investment-types"></div>
+                <div id="investment-list" class="card-grid"></div>
+              </div>
+
+              <div class="wizard-step" data-step-panel="3">
+                <div class="toolbar">
+                  <div>
+                    <h3>Create goals</h3>
+                    <p>Goals are unlimited. Each goal gets target corpus, date, expected allocation, and progress once mapped.</p>
+                  </div>
+                  <button class="secondary" type="button" data-action="create-goal">Create goal</button>
+                </div>
+                <div class="form-grid compact">
+                  <label>Goal name
+                    <input value="Retirement" />
+                  </label>
+                  <label>Target date
+                    <input type="date" value="2047-12-31" />
+                  </label>
+                  <label>Target corpus
+                    <input value="₹8,00,00,000" />
+                  </label>
+                  <label>Expected allocation
+                    <input value="Equity 60%, Debt 30%, Gold 10%" />
+                  </label>
+                </div>
+                <div id="goal-list" class="card-grid"></div>
+              </div>
+
+              <div class="wizard-step" data-step-panel="4">
+                <div class="toolbar">
+                  <div>
+                    <h3>Map goals to investments</h3>
+                    <p>Allocate investment corpus by percentage. Total allocation for a single investment should not exceed 100%.</p>
+                  </div>
+                  <button class="secondary" type="button" data-action="map-investments">Map investments</button>
+                </div>
+                <div class="mapping-board">
+                  <section class="mapping-column">
+                    <h4>Available instruments</h4>
+                    <button class="mapping-token selected" type="button">HDFC Nifty 50 Index · ₹12.4L</button>
+                    <button class="mapping-token" type="button">EPF · ₹32.6L</button>
+                    <button class="mapping-token" type="button">Fixed Deposit · ₹6.0L</button>
+                  </section>
+                  <section class="mapping-column mapping-editor">
+                    <h4>Allocation editor</h4>
+                    <label>Selected instrument
+                      <input value="HDFC Nifty 50 Index Fund" />
+                    </label>
+                    <label>Map to goal
+                      <select>
+                        <option selected>Retirement</option>
+                        <option>Dream Home</option>
+                      </select>
+                    </label>
+                    <label>Allocation percentage
+                      <input value="60%" />
+                    </label>
+                    <div class="allocation-meter">
+                      <span style="width: 60%"></span>
+                    </div>
+                    <p class="helper">60% mapped to Retirement. 40% remains available for other goals.</p>
+                  </section>
+                  <section class="mapping-column">
+                    <h4>Goal allocation result</h4>
+                    <div class="mini-table">
+                      <div><strong>Goal</strong><strong>Mapped corpus</strong></div>
+                      <div><span>Retirement</span><span>₹7.44L</span></div>
+                      <div><span>Dream Home</span><span>₹3.00L</span></div>
+                      <div><span>Unmapped</span><span>₹4.96L</span></div>
+                    </div>
+                  </section>
+                </div>
+                <div class="allocation-table">
+                  <div class="table-row table-head">
+                    <span>Investment</span>
+                    <span>Goal</span>
+                    <span>Allocation</span>
+                    <span>Current value</span>
+                  </div>
+                  <div class="table-row">
+                    <span>HDFC Nifty 50 Index</span>
+                    <span>Retirement</span>
+                    <span><input value="60%" /></span>
+                    <span>₹7.44L</span>
+                  </div>
+                  <div class="table-row">
+                    <span>EPF</span>
+                    <span>Retirement</span>
+                    <span><input value="100%" /></span>
+                    <span>₹32.6L</span>
+                  </div>
+                  <div class="table-row warning">
+                    <span>Fixed Deposit</span>
+                    <span>Dream Home</span>
+                    <span><input value="50%" /></span>
+                    <span>₹3.0L</span>
+                  </div>
+                </div>
+                <p class="helper">Validation guide: allocations above 100% on one investment should be blocked in production.</p>
+              </div>
+
+              <div class="wizard-step" data-step-panel="5">
+                <div class="split-grid">
+                  <div class="form-grid compact">
+                    <label>Monthly gross salary
+                      <input value="₹3,50,000" />
+                    </label>
+                    <label>Bonus month
+                      <select>
+                        <option selected>March</option>
+                        <option>December</option>
+                      </select>
+                    </label>
+                    <label>Bonus percentage of annual gross
+                      <input value="12%" />
+                    </label>
+                    <label>Salary hike YoY
+                      <input value="8%" />
+                    </label>
+                    <label>Monthly expense
+                      <input value="₹1,45,000" />
+                    </label>
+                    <label>Expense increase YoY
+                      <input value="6%" />
+                    </label>
+                  </div>
+                  <div class="projection-preview">
+                    <h3>Projection preview</h3>
+                    <div id="projection-bars" class="bar-chart"></div>
+                    <button class="primary" type="button" data-action="run-simulation">Run simulation</button>
+                  </div>
+                </div>
+                <div class="simulation-results">
+                  <section class="panel flat">
+                    <h3>Yearly assumptions generated by simulation</h3>
+                    <div id="wizard-yearly-assumptions" class="assumption-grid"></div>
+                  </section>
+                  <section class="panel flat">
+                    <h3>Yearly projection with monthly drill-down</h3>
+                    <div id="wizard-monthly-approximations"></div>
+                  </section>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step-panel="6">
+                <div class="completion-panel">
+                  <h3>Dashboard is ready</h3>
+                  <p>Your first plan is assembled: settings, investments, goals, allocation, and monthly projection.</p>
+                  <button class="primary" type="button" data-action="open-dashboard">Open dashboard</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="wizard-actions">
+              <button class="ghost" type="button" data-action="back">Back</button>
+              <button class="primary" type="button" data-action="next">Next</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="dashboard" class="screen"></section>
+        <section id="investments" class="screen"></section>
+        <section id="goals" class="screen"></section>
+        <section id="simulation" class="screen"></section>
+        <section id="settings" class="screen"></section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

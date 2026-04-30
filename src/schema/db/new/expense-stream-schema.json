@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new/expense-stream-schema.json",
+  "title": "Expense Stream",
+  "description": "Recurring or one-time expense source used in planning and simulation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "expense_stream_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stream_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "expense_type": {
+      "type": "string",
+      "enum": [
+        "living",
+        "housing",
+        "loan_emi",
+        "insurance",
+        "education",
+        "healthcare",
+        "travel",
+        "tax",
+        "investment_contribution",
+        "other"
+      ]
+    },
+    "frequency": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "half_yearly",
+        "yearly",
+        "one_time"
+      ]
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "annual_growth_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "growth_model": {
+      "type": "string",
+      "enum": [
+        "fixed_rate",
+        "step_up_schedule",
+        "none"
+      ]
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "essentiality": {
+      "type": "string",
+      "enum": [
+        "essential",
+        "discretionary"
+      ]
+    },
+    "linked_retirement_date_mode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "stop_at_retirement",
+        "start_at_retirement"
+      ]
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 500
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "expense_stream_id",
+    "user_id",
+    "stream_name",
+    "expense_type",
+    "frequency",
+    "amount",
+    "annual_growth_rate",
+    "growth_model",
+    "start_date",
+    "essentiality",
+    "linked_retirement_date_mode",
+    "is_active",
+    "created_at",
+    "updated_at"
+  ]
+}

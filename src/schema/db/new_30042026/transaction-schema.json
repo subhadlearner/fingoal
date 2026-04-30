@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_30042026/transaction-schema.json",
+  "title": "Transaction",
+  "description": "Transaction details uploaded or entered against an investment instrument.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "transaction_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "investment_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "transaction_type": {
+      "type": "string",
+      "enum": ["buy", "sell", "dividend", "interest", "contribution", "withdrawal", "opening_balance"]
+    },
+    "transaction_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "transaction_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "stamp_duty": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0
+    },
+    "nav": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "units": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "unit_balance": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "source": {
+      "type": "string",
+      "enum": ["manual", "cas_upload", "system_generated"],
+      "default": "manual"
+    },
+    "external_reference": {
+      "type": ["string", "null"],
+      "maxLength": 150
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "transaction_id",
+    "user_id",
+    "investment_id",
+    "transaction_type",
+    "transaction_date",
+    "transaction_amount",
+    "stamp_duty",
+    "source",
+    "created_at",
+    "updated_at"
+  ]
+}
