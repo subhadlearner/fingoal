@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/cashflow-month-schema.json",
+  "title": "Cashflow Month",
+  "description": "System-generated monthly income and expense projection persisted after settings save or simulation rerun.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "cashflow_month_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "simulation_run_id": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 2024
+    },
+    "month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "month_key": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "income_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "bonus_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "expense_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "investment_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "savings_amount": {
+      "type": "number"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["settings_generated", "simulation_generated"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "cashflow_month_id",
+    "user_id",
+    "year",
+    "month",
+    "month_key",
+    "income_amount",
+    "bonus_amount",
+    "expense_amount",
+    "investment_amount",
+    "savings_amount",
+    "source",
+    "created_at",
+    "updated_at"
+  ]
+}

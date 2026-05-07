@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/goal-schema.json",
+  "title": "Goal",
+  "description": "Financial goal created by the user. Progress is derived only after investment mapping.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "goal_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goal_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "goal_category": {
+      "type": "string",
+      "enum": [
+        "retirement",
+        "emergency_fund",
+        "home_purchase",
+        "education",
+        "marriage",
+        "vacation",
+        "vehicle",
+        "wealth_creation",
+        "other"
+      ]
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "target_corpus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "expected_equity_allocation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "expected_debt_allocation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "expected_gold_allocation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "paused", "completed", "cancelled"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "goal_id",
+    "user_id",
+    "goal_name",
+    "goal_category",
+    "target_date",
+    "target_corpus",
+    "expected_equity_allocation_percentage",
+    "expected_debt_allocation_percentage",
+    "expected_gold_allocation_percentage",
+    "status",
+    "created_at",
+    "updated_at"
+  ]
+}

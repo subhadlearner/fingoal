@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fingoal.com/schemas/new/instrument-master-schema.json",
+  "$id": "https://fingoal.com/schemas/new_29042026/NA_instrument-master-schema.json",
   "title": "Instrument Master",
   "description": "Reference data for known instruments, schemes, or securities.",
   "type": "object",

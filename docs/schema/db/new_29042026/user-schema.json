@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fingoal.com/schemas/new/user-schema.json",
+  "$id": "https://fingoal.com/schemas/new_29042026/user-schema.json",
   "title": "User",
   "description": "Identity and profile details for a FinGoal user.",
   "type": "object",
@@ -23,12 +23,9 @@
       "description": "Full name of the user."
     },
     "phone_e164": {
-      "type": [
-        "string",
-        "null"
-      ],
+      "type": "string",
       "pattern": "^\\+?[1-9]\\d{1,14}$",
-      "description": "Optional phone number in E.164 format."
+      "description": "Phone number captured during registration in E.164 format."
     },
     "pan": {
       "type": [
@@ -96,6 +93,7 @@
     "user_id",
     "email",
     "full_name",
+    "phone_e164",
     "date_of_birth",
     "country_code",
     "base_currency",

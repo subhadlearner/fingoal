@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/simulation-year-snapshot-schema.json",
+  "title": "Simulation Year Snapshot",
+  "description": "Year-level projection row used by the Phase-1 Simulation UI.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "simulation_year_snapshot_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "simulation_run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 2024
+    },
+    "salary_hike_override_rate": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional user override for this projection year."
+    },
+    "expense_yoy_override_rate": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional user override for this projection year."
+    },
+    "applied_salary_hike_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "applied_expense_yoy_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "total_income": {
+      "type": "number",
+      "minimum": 0
+    },
+    "total_expenses": {
+      "type": "number",
+      "minimum": 0
+    },
+    "planned_investment_contribution": {
+      "type": "number",
+      "minimum": 0
+    },
+    "annual_savings": {
+      "type": "number"
+    },
+    "opening_portfolio_value": {
+      "type": "number",
+      "minimum": 0
+    },
+    "closing_portfolio_value": {
+      "type": "number",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "simulation_year_snapshot_id",
+    "simulation_run_id",
+    "user_id",
+    "year",
+    "applied_salary_hike_rate",
+    "applied_expense_yoy_rate",
+    "total_income",
+    "total_expenses",
+    "planned_investment_contribution",
+    "annual_savings",
+    "opening_portfolio_value",
+    "closing_portfolio_value",
+    "created_at",
+    "updated_at"
+  ]
+}

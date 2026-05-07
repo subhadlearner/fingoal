@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fingoal.com/schemas/new/fund-underlying-snapshot-schema.json",
+  "$id": "https://fingoal.com/schemas/new_29042026/NA_fund-underlying-snapshot-schema.json",
   "title": "Fund Underlying Snapshot",
   "description": "Snapshot of a mutual fund or ETF underlying allocation used for goal-level exposure analysis.",
   "type": "object",

@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/user-settings-schema.json",
+  "title": "User Settings",
+  "description": "Phase-1 planning assumptions, salary components, tax selections, and simulation defaults configured by the user.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "settings_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "country": {
+      "type": "string",
+      "enum": ["India"],
+      "default": "India"
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["INR"],
+      "default": "INR"
+    },
+    "retirement_age": {
+      "type": "integer",
+      "minimum": 35,
+      "maximum": 100
+    },
+    "retirement_month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "life_expectancy_age": {
+      "type": "integer",
+      "minimum": 50,
+      "maximum": 110
+    },
+    "monthly_expense_baseline": {
+      "type": "number",
+      "minimum": 0
+    },
+    "salary_growth_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "expense_inflation_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "expected_inflation_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "income_tax_regime": {
+      "type": "string",
+      "enum": ["old", "new"]
+    },
+    "risk_profile": {
+      "type": "string",
+      "enum": ["conservative", "moderate", "aggressive"]
+    },
+    "current_base_salary_component": {
+      "type": "number",
+      "minimum": 0
+    },
+    "current_hra_salary_component": {
+      "type": "number",
+      "minimum": 0
+    },
+    "current_flexi_bucket_salary_component": {
+      "type": "number",
+      "minimum": 0
+    },
+    "nps_basic_percentage": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 14
+    },
+    "epf_basic_percentage": {
+      "type": "integer",
+      "const": 12
+    },
+    "vpf_basic_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "company_medical_and_insurance_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "gratuity_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "bonus_percentage_of_gross_salary": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "bonus_payout_month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "salary_pay_day": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 31
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "settings_id",
+    "user_id",
+    "country",
+    "currency",
+    "retirement_age",
+    "retirement_month",
+    "life_expectancy_age",
+    "monthly_expense_baseline",
+    "salary_growth_rate",
+    "expense_inflation_rate",
+    "expected_inflation_rate",
+    "income_tax_regime",
+    "risk_profile",
+    "current_base_salary_component",
+    "current_hra_salary_component",
+    "current_flexi_bucket_salary_component",
+    "nps_basic_percentage",
+    "epf_basic_percentage",
+    "vpf_basic_percentage",
+    "company_medical_and_insurance_amount",
+    "gratuity_amount",
+    "bonus_percentage_of_gross_salary",
+    "bonus_payout_month",
+    "salary_pay_day",
+    "created_at",
+    "updated_at"
+  ]
+}

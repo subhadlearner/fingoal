@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fingoal.com/schemas/new/income-stream-schema.json",
+  "$id": "https://fingoal.com/schemas/new_29042026/income-stream-schema.json",
   "title": "Income Stream",
   "description": "Recurring or one-time income source used in planning and simulation.",
   "type": "object",
@@ -14,6 +14,14 @@
       "type": "string",
       "format": "uuid"
     },
+    "settings_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Settings record from which the default Phase-1 salary stream was generated."
+    },
     "stream_name": {
       "type": "string",
       "minLength": 1,
@@ -23,13 +31,6 @@
       "type": "string",
       "enum": [
         "salary",
-        "bonus",
-        "business",
-        "freelance",
-        "rental",
-        "interest",
-        "dividend",
-        "pension",
         "other"
       ]
     },
@@ -54,7 +55,7 @@
     "amount": {
       "type": "number",
       "minimum": 0,
-      "description": "Primary recurring amount used for the stream. In simple mode this is typically in-hand income."
+      "description": "Phase-1 monthly salary amount derived from salary components."
     },
     "gross_amount": {
       "type": [
@@ -76,6 +77,23 @@
       "type": "number",
       "minimum": 0,
       "maximum": 1
+    },
+    "bonus_percentage_of_gross_salary": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Bonus percentage from settings; bonus is added into the configured payout month."
+    },
+    "bonus_payout_month": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 12
     },
     "growth_model": {
       "type": "string",
@@ -110,6 +128,14 @@
     "is_active": {
       "type": "boolean"
     },
+    "source": {
+      "type": "string",
+      "enum": [
+        "settings_generated",
+        "manual"
+      ],
+      "description": "Phase-1 salary stream is generated from user settings."
+    },
     "notes": {
       "type": [
         "string",
@@ -129,6 +155,7 @@
   "required": [
     "income_stream_id",
     "user_id",
+    "settings_id",
     "stream_name",
     "income_type",
     "calculation_mode",
@@ -140,6 +167,7 @@
     "taxable",
     "linked_retirement_date_mode",
     "is_active",
+    "source",
     "created_at",
     "updated_at"
   ]

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fingoal.com/schemas/new/simulation-assumption-schema.json",
+  "$id": "https://fingoal.com/schemas/new_29042026/NA_simulation-assumption-schema.json",
   "title": "Simulation Assumption",
   "description": "Explicit assumption set used by a simulation run.",
   "type": "object",

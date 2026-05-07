@@ -44,11 +44,11 @@
           <div class="wizard-shell">
             <div class="wizard-head">
               <div>
-                <p class="eyebrow" id="step-eyebrow">Step 1 of 7</p>
+                <p class="eyebrow" id="step-eyebrow">Step 1 of 6</p>
                 <h2 id="step-title">Register with email OTP</h2>
               </div>
               <div class="mobile-progress">
-                <span id="mobile-step-current">1</span>/<span id="mobile-step-total">7</span>
+                <span id="mobile-step-current">1</span>/<span id="mobile-step-total">6</span>
               </div>
             </div>
 
@@ -58,8 +58,7 @@
               <button class="step-pill" data-step="2" type="button">Investments</button>
               <button class="step-pill" data-step="3" type="button">Goals</button>
               <button class="step-pill" data-step="4" type="button">Mapping</button>
-              <button class="step-pill" data-step="5" type="button">Simulation</button>
-              <button class="step-pill" data-step="6" type="button">Dashboard</button>
+              <button class="step-pill" data-step="5" type="button">Finish</button>
             </div>
 
             <div class="wizard-card">
@@ -335,7 +334,7 @@
                 <div class="toolbar">
                   <div>
                     <h3>Create goals</h3>
-                    <p>Goals are unlimited. Each goal gets target corpus, date, expected allocation, and progress once mapped.</p>
+                    <p>Goals are unlimited. Progress appears only after investments are mapped.</p>
                   </div>
                   <button class="secondary" type="button" data-action="create-goal">Create goal</button>
                 </div>
@@ -349,8 +348,14 @@
                   <label>Target corpus
                     <input value="₹8,00,00,000" />
                   </label>
-                  <label>Expected allocation
-                    <input value="Equity 60%, Debt 30%, Gold 10%" />
+                  <label>Expected equity allocation
+                    <input value="60%" />
+                  </label>
+                  <label>Expected debt allocation
+                    <input value="30%" />
+                  </label>
+                  <label>Expected gold allocation
+                    <input value="10%" />
                   </label>
                 </div>
                 <div id="goal-list" class="card-grid"></div>
@@ -360,7 +365,7 @@
                 <div class="toolbar">
                   <div>
                     <h3>Map goals to investments</h3>
-                    <p>Allocate investment corpus by percentage. Total allocation for a single investment should not exceed 100%.</p>
+                    <p>Map the full corpus of one investment instrument to one goal. Partial allocation is not supported.</p>
                   </div>
                   <button class="secondary" type="button" data-action="map-investments">Map investments</button>
                 </div>
@@ -372,111 +377,61 @@
                     <button class="mapping-token" type="button">Fixed Deposit · ₹6.0L</button>
                   </section>
                   <section class="mapping-column mapping-editor">
-                    <h4>Allocation editor</h4>
-                    <label>Selected instrument
-                      <input value="HDFC Nifty 50 Index Fund" />
+                    <h4>Mapping editor</h4>
+                    <label>Instrument
+                      <select>
+                        <option selected>HDFC Nifty 50 Index Fund</option>
+                        <option>Employee Provident Fund</option>
+                        <option>Fixed Deposit</option>
+                      </select>
                     </label>
-                    <label>Map to goal
+                    <label>Goal
                       <select>
                         <option selected>Retirement</option>
                         <option>Dream Home</option>
                       </select>
                     </label>
-                    <label>Allocation percentage
-                      <input value="60%" />
-                    </label>
-                    <div class="allocation-meter">
-                      <span style="width: 60%"></span>
-                    </div>
-                    <p class="helper">60% mapped to Retirement. 40% remains available for other goals.</p>
+                    <button class="primary" type="button" data-action="map-investments">Map investment</button>
+                    <p class="helper">Mapping always allocates 100% of the selected instrument corpus to the selected goal.</p>
                   </section>
                   <section class="mapping-column">
-                    <h4>Goal allocation result</h4>
-                    <div class="mini-table">
-                      <div><strong>Goal</strong><strong>Mapped corpus</strong></div>
-                      <div><span>Retirement</span><span>₹7.44L</span></div>
-                      <div><span>Dream Home</span><span>₹3.00L</span></div>
-                      <div><span>Unmapped</span><span>₹4.96L</span></div>
-                    </div>
+                    <h4>Saved mappings</h4>
+                    <div id="wizard-mapping-list" class="mapping-tile-list"></div>
                   </section>
                 </div>
                 <div class="allocation-table">
                   <div class="table-row table-head">
                     <span>Investment</span>
                     <span>Goal</span>
-                    <span>Allocation</span>
                     <span>Current value</span>
                   </div>
                   <div class="table-row">
                     <span>HDFC Nifty 50 Index</span>
                     <span>Retirement</span>
-                    <span><input value="60%" /></span>
-                    <span>₹7.44L</span>
+                    <span>₹12.4L</span>
                   </div>
                   <div class="table-row">
                     <span>EPF</span>
                     <span>Retirement</span>
-                    <span><input value="100%" /></span>
                     <span>₹32.6L</span>
                   </div>
                   <div class="table-row warning">
                     <span>Fixed Deposit</span>
                     <span>Dream Home</span>
-                    <span><input value="50%" /></span>
-                    <span>₹3.0L</span>
+                    <span>₹6.0L</span>
                   </div>
                 </div>
-                <p class="helper">Validation guide: allocations above 100% on one investment should be blocked in production.</p>
+                <p class="helper">Each instrument can be mapped to one goal at 100% corpus.</p>
               </div>
 
               <div class="wizard-step" data-step-panel="5">
-                <div class="split-grid">
-                  <div class="form-grid compact">
-                    <label>Monthly gross salary
-                      <input value="₹3,50,000" />
-                    </label>
-                    <label>Bonus month
-                      <select>
-                        <option selected>March</option>
-                        <option>December</option>
-                      </select>
-                    </label>
-                    <label>Bonus percentage of annual gross
-                      <input value="12%" />
-                    </label>
-                    <label>Salary hike YoY
-                      <input value="8%" />
-                    </label>
-                    <label>Monthly expense
-                      <input value="₹1,45,000" />
-                    </label>
-                    <label>Expense increase YoY
-                      <input value="6%" />
-                    </label>
-                  </div>
-                  <div class="projection-preview">
-                    <h3>Projection preview</h3>
-                    <div id="projection-bars" class="bar-chart"></div>
-                    <button class="primary" type="button" data-action="run-simulation">Run simulation</button>
-                  </div>
-                </div>
-                <div class="simulation-results">
-                  <section class="panel flat">
-                    <h3>Yearly assumptions generated by simulation</h3>
-                    <div id="wizard-yearly-assumptions" class="assumption-grid"></div>
-                  </section>
-                  <section class="panel flat">
-                    <h3>Yearly projection with monthly drill-down</h3>
-                    <div id="wizard-monthly-approximations"></div>
-                  </section>
-                </div>
-              </div>
-
-              <div class="wizard-step" data-step-panel="6">
                 <div class="completion-panel">
-                  <h3>Dashboard is ready</h3>
-                  <p>Your first plan is assembled: settings, investments, goals, allocation, and monthly projection.</p>
-                  <button class="primary" type="button" data-action="open-dashboard">Open dashboard</button>
+                  <h3>Setup is ready</h3>
+                  <p>Your registration, settings, investments, goals, and mappings are captured. Use the Simulation menu later to run projections from saved settings.</p>
+                  <div class="action-row">
+                    <button class="primary" type="button" data-action="open-dashboard">Open dashboard</button>
+                    <button class="secondary" type="button" data-target="simulation">Go to simulation</button>
+                  </div>
                 </div>
               </div>
             </div>

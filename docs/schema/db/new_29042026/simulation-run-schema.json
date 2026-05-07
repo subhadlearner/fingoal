@@ -15,8 +15,12 @@
       "format": "uuid"
     },
     "simulation_assumption_id": {
-      "type": "string",
-      "format": "uuid"
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Optional in Phase-1 because assumptions are derived from user settings; retained for later scenario support."
     },
     "run_name": {
       "type": "string",
@@ -93,7 +97,6 @@
   "required": [
     "simulation_run_id",
     "user_id",
-    "simulation_assumption_id",
     "run_name",
     "run_type",
     "scenario_type",

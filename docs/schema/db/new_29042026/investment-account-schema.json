@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/investment-account-schema.json",
+  "title": "Investment Account",
+  "description": "Phase-1 investment instrument captured through CAS or manual entry and used for corpus tracking, projection, and goal mapping.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "investment_account_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "portfolio_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "instrument_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 150
+    },
+    "instrument_type": {
+      "type": "string",
+      "enum": [
+        "mutual_fund",
+        "government_scheme",
+        "etf",
+        "stock_option",
+        "fixed_deposit",
+        "savings_account"
+      ]
+    },
+    "government_scheme_type": {
+      "type": ["string", "null"],
+      "enum": ["epf", "nps", "ppf", "ssy", null],
+      "description": "Populated only when instrument_type is government_scheme."
+    },
+    "instrument_status": {
+      "type": "string",
+      "enum": ["active", "paused", "stopped"]
+    },
+    "fund_category": {
+      "type": ["string", "null"],
+      "enum": [
+        "large_cap",
+        "mid_cap",
+        "small_cap",
+        "flexi_cap",
+        "liquid",
+        "large_cap_index",
+        "large_and_mid_cap",
+        null
+      ],
+      "description": "Visible only for mutual funds in Phase-1."
+    },
+    "contribution_frequency": {
+      "type": "string",
+      "enum": ["monthly", "annually"]
+    },
+    "asset_type": {
+      "type": "string",
+      "enum": ["equity", "debt", "gold"]
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "expected_roi": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "current_corpus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "current_corpus_source": {
+      "type": "string",
+      "enum": ["manual", "cas_upload", "transaction_derived"]
+    },
+    "investment_start_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "step_up_type": {
+      "type": "string",
+      "enum": ["salary_linked", "manual", "automatic_yoy", "not_applicable"]
+    },
+    "step_up_percentage": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100
+    },
+    "manual_step_up_schedule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "schedule_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "schedule_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["schedule_id", "schedule_name", "schedule_date", "amount"]
+      },
+      "default": []
+    },
+    "source": {
+      "type": "string",
+      "enum": ["manual", "cas_upload"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "investment_account_id",
+    "user_id",
+    "portfolio_id",
+    "instrument_name",
+    "instrument_type",
+    "instrument_status",
+    "contribution_frequency",
+    "asset_type",
+    "start_date",
+    "end_date",
+    "expected_roi",
+    "current_corpus",
+    "current_corpus_source",
+    "investment_start_amount",
+    "step_up_type",
+    "manual_step_up_schedule",
+    "source",
+    "created_at",
+    "updated_at"
+  ]
+}

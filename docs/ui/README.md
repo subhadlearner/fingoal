@@ -15,10 +15,10 @@ Open `index.html` directly in a browser.
 - Investment capture for Mutual Fund, Government Scheme, ETF, Stock Option, Fixed Deposit, and Savings Account
 - Mutual Fund CAS-first flow with parsed fund-name dropdown
 - Goal creation
-- Goal-to-investment percentage allocation
-- Income and expense simulation
+- Goal-to-investment mapping with 100% corpus allocation
+- Standalone income and expense simulation from saved settings
 - Editable yearly salary hike and expense increase assumptions
-- Year-summary projection with expandable monthly income and expense approximation rows
+- Year-summary projection with editable salary hike and expense YoY overrides
 - Dashboard, Investments, Goals, Simulation, and Settings screens
 
 The prototype uses sample in-memory data only. It does not perform authentication, persistence, upload parsing, or real financial calculations.

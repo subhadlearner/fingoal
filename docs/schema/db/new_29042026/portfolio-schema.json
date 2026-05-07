@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/portfolio-schema.json",
+  "title": "Portfolio",
+  "description": "User portfolio summary shown on the Phase-1 dashboard.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "portfolio_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "portfolio_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "current_corpus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "current_equity_allocation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "current_debt_allocation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "current_gold_allocation_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "portfolio_id",
+    "user_id",
+    "portfolio_name",
+    "current_corpus",
+    "current_equity_allocation_percentage",
+    "current_debt_allocation_percentage",
+    "current_gold_allocation_percentage",
+    "created_at",
+    "updated_at"
+  ]
+}

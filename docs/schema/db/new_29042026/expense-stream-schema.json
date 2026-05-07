@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fingoal.com/schemas/new/expense-stream-schema.json",
+  "$id": "https://fingoal.com/schemas/new_29042026/expense-stream-schema.json",
   "title": "Expense Stream",
   "description": "Recurring or one-time expense source used in planning and simulation.",
   "type": "object",
@@ -14,6 +14,14 @@
       "type": "string",
       "format": "uuid"
     },
+    "settings_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Settings record from which the default Phase-1 household expense stream was generated."
+    },
     "stream_name": {
       "type": "string",
       "minLength": 1,
@@ -23,14 +31,6 @@
       "type": "string",
       "enum": [
         "living",
-        "housing",
-        "loan_emi",
-        "insurance",
-        "education",
-        "healthcare",
-        "travel",
-        "tax",
-        "investment_contribution",
         "other"
       ]
     },
@@ -90,6 +90,14 @@
     "is_active": {
       "type": "boolean"
     },
+    "source": {
+      "type": "string",
+      "enum": [
+        "settings_generated",
+        "manual"
+      ],
+      "description": "Phase-1 household expense stream is generated from user settings."
+    },
     "notes": {
       "type": [
         "string",
@@ -109,6 +117,7 @@
   "required": [
     "expense_stream_id",
     "user_id",
+    "settings_id",
     "stream_name",
     "expense_type",
     "frequency",
@@ -119,6 +128,7 @@
     "essentiality",
     "linked_retirement_date_mode",
     "is_active",
+    "source",
     "created_at",
     "updated_at"
   ]

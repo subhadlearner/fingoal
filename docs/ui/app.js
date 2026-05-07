@@ -84,9 +84,9 @@ const state = {
   selectedMonth: { year: "2026", month: "Mar" },
   projectionWindow: "2026-2029 sample",
   goalMappings: [
-    { investment: "HDFC Nifty 50 Index", goal: "Retirement", allocation: "60%", value: "₹7.44L", remaining: "40%" },
-    { investment: "EPF", goal: "Retirement", allocation: "100%", value: "₹32.6L", remaining: "0%" },
-    { investment: "Fixed Deposit", goal: "Dream Home", allocation: "50%", value: "₹3.0L", remaining: "50%" }
+    { investment: "HDFC Nifty 50 Index", goal: "Retirement", value: "₹12.4L" },
+    { investment: "EPF", goal: "Retirement", value: "₹32.6L" },
+    { investment: "Fixed Deposit", goal: "Dream Home", value: "₹6.0L" }
   ]
 };
 
@@ -96,8 +96,7 @@ const steps = [
   "Capture investments",
   "Create financial goals",
   "Map goals to investments",
-  "Simulate income and expenses",
-  "Review dashboard"
+  "Finish setup"
 ];
 
 const screenTitles = {
@@ -171,14 +170,35 @@ function renderGoals(target = qs("#goal-list")) {
   if (!target) return;
   target.innerHTML = state.goals
     .map(
-      (goal) => `
-        <article class="data-card">
-          <strong>${goal.progress}</strong>
-          <span>${goal.name} progress</span>
+      (goal, index) => `
+        <article class="data-card investment-tile">
+          <button class="tile-remove" type="button" data-action="remove-goal" data-goal-index="${index}" aria-label="Remove ${goal.name}">X</button>
+          <strong>${goal.target}</strong>
+          <span>${goal.name}</span>
           <div class="chip-list">
-            <span class="chip">Target ${goal.target}</span>
-            <span class="chip">Current ${goal.current}</span>
-            <span class="status ${goal.status === "Lagging" ? "warn" : "good"}">${goal.status}</span>
+            <span class="chip">Target corpus</span>
+            <span class="chip">Equity 60%</span>
+            <span class="chip">Debt 30%</span>
+            <span class="chip">Gold 10%</span>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderMappings(target = qs("#wizard-mapping-list")) {
+  if (!target) return;
+  target.innerHTML = state.goalMappings
+    .map(
+      (mapping, index) => `
+        <article class="data-card investment-tile mapping-tile">
+          <button class="tile-remove" type="button" data-action="remove-mapping" data-mapping-index="${index}" aria-label="Remove mapping">X</button>
+          <strong>${mapping.value}</strong>
+          <span>${mapping.investment}</span>
+          <div class="chip-list">
+            <span class="chip">Goal ${mapping.goal}</span>
+            <span class="chip">100% corpus</span>
           </div>
         </article>
       `
@@ -220,11 +240,12 @@ function dashboardMarkup() {
       <div class="section-head">
         <div>
           <p class="eyebrow">Current position</p>
-          <h2>Financial plan snapshot</h2>
+          <h2>My Growth Portfolio</h2>
+          <p>Portfolio-level dashboard for mapped goals and current corpus.</p>
         </div>
         <div class="action-row">
           <button class="secondary" type="button" data-target="onboarding" data-step-jump="4">Manage mappings</button>
-          <button class="secondary" type="button" data-target="simulation">Review monthly approximation</button>
+          <button class="secondary" type="button" data-target="simulation">Run simulation</button>
         </div>
       </div>
 
@@ -264,11 +285,6 @@ function dashboardMarkup() {
           </div>
         </section>
       </div>
-
-      <section class="panel">
-        <h3>Projection timeline until retirement</h3>
-        ${projectionTable()}
-      </section>
     </div>
   `;
 }
@@ -298,40 +314,10 @@ function monthRows(year) {
           <span>${row.expense}</span>
           <span>${row.investment}</span>
           <span>${row.savings}</span>
-          <button class="ghost small" type="button" data-action="select-month" data-year="${year}" data-month="${row.month}">Edit</button>
         </div>
       `
     )
     .join("");
-}
-
-function selectedMonthDetails() {
-  const months = state.monthlyByYear[state.selectedMonth.year] || [];
-  return months.find((row) => row.month === state.selectedMonth.month) || months[0] || state.monthlyByYear["2026"][0];
-}
-
-function monthEditorMarkup() {
-  const month = selectedMonthDetails();
-  return `
-    <aside class="month-editor">
-      <h3>${state.selectedMonth.month} ${state.selectedMonth.year}</h3>
-      <p>Edit one month without scrolling through hundreds of generated rows.</p>
-      <label>Income approximation
-        <input value="${month.income}" />
-      </label>
-      <label>Bonus
-        <input value="${month.bonus}" />
-      </label>
-      <label>Expense approximation
-        <input value="${month.expense}" />
-      </label>
-      <label>Investment
-        <input value="${month.investment}" />
-      </label>
-      <button class="primary" type="button">Save month override</button>
-      <p class="helper">Future simulation changes can overwrite future-month overrides. Past months stay unchanged.</p>
-    </aside>
-  `;
 }
 
 function projectionTimelineMarkup(mode = "full") {
@@ -369,7 +355,7 @@ function projectionTimelineMarkup(mode = "full") {
                 </div>
                 <div class="month-table">
                   <div class="month-row month-head">
-                    <span>Month</span><span>Income</span><span>Bonus</span><span>Expense</span><span>Investment</span><span>Savings</span><span>Action</span>
+                    <span>Month</span><span>Income</span><span>Bonus</span><span>Expense</span><span>Investment</span><span>Savings</span>
                   </div>
                   ${monthRows(row.year)}
                 </div>
@@ -378,7 +364,6 @@ function projectionTimelineMarkup(mode = "full") {
           )
           .join("")}
       </div>
-      ${monthEditorMarkup()}
     </div>
   `;
 }
@@ -404,28 +389,44 @@ function mappingBoardMarkup() {
     <div class="mapping-board">
       <section class="mapping-column">
         <h4>Investment instruments</h4>
-        ${state.investments.map((item, index) => `<button class="mapping-token ${index === 0 ? "selected" : ""}" type="button">${item.name} · ${item.corpus}</button>`).join("")}
+        <label>Instrument
+          <select>${state.investments.map((item) => `<option>${item.name} · ${item.corpus}</option>`).join("")}</select>
+        </label>
       </section>
       <section class="mapping-column mapping-editor">
         <h4>Map selected instrument</h4>
         <label>Goal
           <select><option>Retirement</option><option>Dream Home</option><option>Child Education</option></select>
         </label>
-        <label>Allocation percentage
-          <input value="60%" />
-        </label>
-        <div class="allocation-meter"><span style="width: 60%"></span></div>
-        <button class="secondary" type="button">Save mapping</button>
+        <button class="secondary" type="button" data-action="map-investments">Map investment</button>
+        <p class="helper">Mapping always allocates 100% of the selected instrument corpus.</p>
       </section>
       <section class="mapping-column">
         <h4>Saved mappings</h4>
-        <div class="mini-table">
-          <div><strong>Mapping</strong><strong>Value</strong></div>
-          ${state.goalMappings.map((row) => `<div><span>${row.investment} → ${row.goal}</span><span>${row.allocation} · ${row.value}</span></div>`).join("")}
+        <div class="mapping-tile-list">
+          ${mappingTilesMarkup()}
         </div>
       </section>
     </div>
   `;
+}
+
+function mappingTilesMarkup() {
+  return state.goalMappings
+    .map(
+      (mapping, index) => `
+        <article class="data-card investment-tile mapping-tile">
+          <button class="tile-remove" type="button" data-action="remove-mapping" data-mapping-index="${index}" aria-label="Remove mapping">X</button>
+          <strong>${mapping.value}</strong>
+          <span>${mapping.investment}</span>
+          <div class="chip-list">
+            <span class="chip">Goal ${mapping.goal}</span>
+            <span class="chip">100% corpus</span>
+          </div>
+        </article>
+      `
+    )
+    .join("");
 }
 
 function investmentsMarkup() {
@@ -466,7 +467,7 @@ function goalsMarkup() {
       <div class="section-head">
         <div>
           <p class="eyebrow">Planning</p>
-          <h2>Goals and progress</h2>
+          <h2>Goals</h2>
         </div>
         <div class="action-row">
           <button class="secondary" type="button" data-target="onboarding" data-step-jump="3">Create goal</button>
@@ -476,14 +477,16 @@ function goalsMarkup() {
       <div class="card-grid">
         ${state.goals
           .map(
-            (goal) => `
-              <article class="data-card">
-                <strong>${goal.progress}</strong>
+            (goal, index) => `
+              <article class="data-card investment-tile">
+                <button class="tile-remove" type="button" data-action="remove-goal" data-goal-index="${index}" aria-label="Remove ${goal.name}">X</button>
+                <strong>${goal.target}</strong>
                 <span>${goal.name}</span>
                 <div class="chip-list">
                   <span class="chip">Target ${goal.target}</span>
-                  <span class="chip">Current ${goal.current}</span>
-                  <span class="status ${goal.status === "Lagging" ? "warn" : "good"}">${goal.status}</span>
+                  <span class="chip">Equity 60%</span>
+                  <span class="chip">Debt 30%</span>
+                  <span class="chip">Gold 10%</span>
                 </div>
               </article>
             `
@@ -506,41 +509,41 @@ function simulationMarkup() {
           <p class="eyebrow">Cashflow</p>
           <h2>Income, expense, investment, and savings projection</h2>
         </div>
-        <button class="primary" type="button" data-target="onboarding" data-step-jump="5">Run simulation</button>
+        <button class="primary" type="button" data-action="simulate">Simulate</button>
       </div>
       <section class="panel">
         <div class="dashboard-grid">
           <div>
-            <h3>Assumptions</h3>
+            <h3>Saved settings used for simulation</h3>
             <div class="chip-list">
-              <span class="chip">Salary hike 8%</span>
-              <span class="chip">Bonus March · 12% annual gross</span>
-              <span class="chip">Expense increase 6%</span>
+              <span class="chip">Salary components from Settings</span>
+              <span class="chip">Bonus March · 12% gross</span>
+              <span class="chip">Expense baseline from Settings</span>
               <span class="chip">Retirement Dec 2047</span>
             </div>
           </div>
           <div class="bar-chart">
-            ${["Income", "Expense", "Investment", "Savings"]
-              .map((label, index) => {
-                const widths = [92, 38, 16, 40];
-                const values = ["₹3.50L", "₹1.45L", "₹55K", "₹1.50L"];
-                const classes = ["", "expense", "savings", "savings"];
-                return `<div class="bar-row"><span>${label}</span><div class="bar-track"><div class="bar-fill ${classes[index]}" style="width:${widths[index]}%"></div></div><span>${values[index]}</span></div>`;
-              })
-              .join("")}
+            ${projectionPreviewMarkup()}
           </div>
         </div>
       </section>
       <section class="panel">
-        <h3>Editable yearly hike and expense assumptions</h3>
-        <div class="assumption-grid">${yearlyAssumptionCards()}</div>
-      </section>
-      <section class="panel">
-        <h3>Year-summary projection with monthly drill-down</h3>
+        <h3>Yearly projection and override assumptions</h3>
         ${projectionTable()}
       </section>
     </div>
   `;
+}
+
+function projectionPreviewMarkup() {
+  return ["Income", "Expense", "Investment", "Savings"]
+    .map((label, index) => {
+      const widths = [92, 38, 16, 40];
+      const values = ["₹3.50L", "₹1.45L", "₹55K", "₹1.50L"];
+      const classes = ["", "expense", "savings", "savings"];
+      return `<div class="bar-row"><span>${label}</span><div class="bar-track"><div class="bar-fill ${classes[index]}" style="width:${widths[index]}%"></div></div><span>${values[index]}</span></div>`;
+    })
+    .join("");
 }
 
 function settingsMarkup() {
@@ -683,6 +686,33 @@ function addSampleGoal() {
   renderGoals();
 }
 
+function removeGoal(index) {
+  state.goals.splice(index, 1);
+  renderGoals();
+  renderAppScreens();
+}
+
+function mapInvestment() {
+  state.goalMappings.push({
+    investment: "Parag Parikh Flexi Cap Fund",
+    goal: "Dream Home",
+    value: "₹8.7L"
+  });
+  renderMappings();
+  renderAppScreens();
+}
+
+function removeMapping(index) {
+  state.goalMappings.splice(index, 1);
+  renderMappings();
+  renderAppScreens();
+}
+
+function simulateProjection(button) {
+  button.textContent = "Simulation updated";
+  renderAppScreens();
+}
+
 function setElementVisible(selector, visible) {
   const element = qs(selector);
   if (element) element.classList.toggle("hidden", !visible);
@@ -780,17 +810,15 @@ document.addEventListener("click", (event) => {
   if (action === "remove-investment") removeInvestment(Number(actionButton.dataset.investmentIndex));
   if (action === "select-investment-type") selectInvestmentType(actionButton.dataset.investmentType);
   if (action === "create-goal") addSampleGoal();
-  if (action === "map-investments") setStep(5);
-  if (action === "run-simulation") setStep(6);
+  if (action === "remove-goal") removeGoal(Number(actionButton.dataset.goalIndex));
+  if (action === "map-investments") mapInvestment();
+  if (action === "remove-mapping") removeMapping(Number(actionButton.dataset.mappingIndex));
+  if (action === "simulate") simulateProjection(actionButton);
   if (action === "open-dashboard") setScreen("dashboard");
   if (action === "toggle-nav") qs(".sidebar").classList.toggle("open");
   if (action === "toggle-year") {
     state.expandedYear = actionButton.dataset.year;
     renderWizardSimulationTables();
-    renderAppScreens();
-  }
-  if (action === "select-month") {
-    state.selectedMonth = { year: actionButton.dataset.year, month: actionButton.dataset.month };
     renderAppScreens();
   }
   if (action === "mock-cas-upload") {
@@ -816,6 +844,7 @@ qs("#step-up-type").addEventListener("change", syncInvestmentForm);
 
 renderInvestments();
 renderGoals();
+renderMappings();
 renderProjectionBars();
 renderWizardSimulationTables();
 renderAppScreens();
