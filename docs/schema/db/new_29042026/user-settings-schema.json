@@ -34,6 +34,11 @@
       "minimum": 1,
       "maximum": 12
     },
+    "retirement_year": {
+      "type": "integer",
+      "minimum": 2024,
+      "description": "Dynamically calculated from user DOB + retirement_age and stored on settings save. Treated as derived but persisted to avoid repeated cross-record joins."
+    },
     "life_expectancy_age": {
       "type": "integer",
       "minimum": 50,
@@ -131,6 +136,7 @@
     "currency",
     "retirement_age",
     "retirement_month",
+    "retirement_year",
     "life_expectancy_age",
     "monthly_expense_baseline",
     "salary_growth_rate",

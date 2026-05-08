@@ -15,10 +15,7 @@
       "format": "uuid"
     },
     "simulation_assumption_id": {
-      "type": [
-        "string",
-        "null"
-      ],
+      "type": ["string", "null"],
       "format": "uuid",
       "description": "Optional in Phase-1 because assumptions are derived from user settings; retained for later scenario support."
     },
@@ -38,12 +35,7 @@
     },
     "scenario_type": {
       "type": "string",
-      "enum": [
-        "conservative",
-        "base",
-        "optimistic",
-        "custom"
-      ]
+      "enum": ["conservative", "base", "optimistic", "custom"]
     },
     "projection_start_year": {
       "type": "integer",
@@ -55,39 +47,43 @@
     },
     "retirement_year": {
       "type": "integer",
-      "minimum": 2024
+      "minimum": 2024,
+      "description": "Resolved retirement year at the time this simulation run was created."
+    },
+    "retirement_month": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12,
+      "description": "Resolved retirement month at the time this simulation run was created."
     },
     "opening_net_worth": {
-      "type": "number",
-      "minimum": 0
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Null until simulation completes."
     },
     "projected_retirement_corpus": {
-      "type": "number",
-      "minimum": 0
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Null until simulation completes."
     },
     "required_retirement_corpus": {
-      "type": "number",
-      "minimum": 0
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Null until simulation completes."
     },
     "goal_funding_ratio": {
-      "type": "number",
-      "minimum": 0
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Null until simulation completes."
     },
     "retirement_readiness_flag": {
-      "type": "string",
-      "enum": [
-        "green",
-        "amber",
-        "red"
-      ]
+      "type": ["string", "null"],
+      "enum": ["green", "amber", "red", null],
+      "description": "Null until simulation completes."
     },
     "status": {
       "type": "string",
-      "enum": [
-        "queued",
-        "completed",
-        "failed"
-      ]
+      "enum": ["queued", "completed", "failed"]
     },
     "generated_at": {
       "type": "string",
@@ -103,11 +99,7 @@
     "projection_start_year",
     "projection_end_year",
     "retirement_year",
-    "opening_net_worth",
-    "projected_retirement_corpus",
-    "required_retirement_corpus",
-    "goal_funding_ratio",
-    "retirement_readiness_flag",
+    "retirement_month",
     "status",
     "generated_at"
   ]
