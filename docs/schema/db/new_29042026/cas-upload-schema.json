@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fingoal.com/schemas/new_29042026/cas-upload-schema.json",
+  "title": "CAS Upload",
+  "description": "Tracks each CAS file upload, its parse status, and the outcome of transaction ingestion.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "cas_upload_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "s3_key": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "S3 object key for the uploaded CAS file."
+    },
+    "upload_status": {
+      "type": "string",
+      "enum": ["pending", "parsing", "completed", "failed"],
+      "description": "Lifecycle status of the CAS parse job."
+    },
+    "parsed_fund_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "List of mutual fund names extracted from the CAS file."
+    },
+    "parsed_transaction_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Total number of transactions found in the CAS file before deduplication."
+    },
+    "inserted_transaction_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Number of net new transactions written to DB after deduplication."
+    },
+    "duplicate_transaction_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Number of transactions skipped because they already existed in DB."
+    },
+    "failure_reason": {
+      "type": ["string", "null"],
+      "maxLength": 500,
+      "description": "Human-readable error message populated only when upload_status is failed."
+    },
+    "uploaded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "parsed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp when parsing completed, null until then."
+    }
+  },
+  "required": [
+    "cas_upload_id",
+    "user_id",
+    "s3_key",
+    "upload_status",
+    "parsed_fund_names",
+    "uploaded_at"
+  ]
+}
