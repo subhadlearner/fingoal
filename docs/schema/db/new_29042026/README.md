@@ -8,11 +8,12 @@ The Phase-1 product flow is:
 2. User saves planning settings and salary assumptions.
 3. Backend creates one salary income stream and one household expense stream from settings.
 4. Backend generates month-wise income and expense projection records from those streams.
-5. User adds investment instruments.
-6. User creates goals.
-7. User maps each investment instrument fully to one goal.
-8. User runs simulation from the Simulation page.
-9. Dashboard shows portfolio name, current corpus, goal health, CAGR/XIRR placeholders, and allocation.
+5. User uploads CAS file; backend parses it, deduplicates transactions, and auto-writes transaction records.
+6. User adds investment instruments.
+7. User creates goals.
+8. User maps each investment instrument fully to one goal.
+9. User runs simulation from the Simulation page.
+10. Dashboard shows portfolio name, current corpus, goal health, CAGR/XIRR placeholders, and allocation.
 
 ## UI to Schema Mapping
 
@@ -41,6 +42,7 @@ Stores the Settings page fields:
 
 - country and currency
 - retirement age and retirement month
+- retirement year (derived from DOB + retirement age, stored on save)
 - life expectancy age
 - monthly expense baseline
 - salary hike, expense YoY, and expected inflation
@@ -61,6 +63,27 @@ Phase-1 stream defaults:
 - one expense stream: `Household Expenses`
 
 The UI does not expose a separate Income/Expense stream manager in Phase-1. Settings remain the editable user-facing surface.
+
+### CAS Upload
+Schema:
+- `cas-upload-schema.json`
+Tracks the full lifecycle of each CAS file upload:
+- `upload_status`: `pending` → `parsing` → `completed` or `failed`
+- `parsed_fund_names`: list of mutual fund names extracted, used to populate the instrument name dropdown in the UI
+- `parsed_transaction_count`: total transactions found in the CAS file before deduplication
+- `inserted_transaction_count`: net new transactions written to DB
+- `duplicate_transaction_count`: transactions skipped due to deduplication
+- `failure_reason`: populated only on failure, for debugging and retry
+Key design rules:
+- Users can upload multiple CAS files over time.
+- No user confirmation step; transactions are auto-written after parsing.
+- Deduplication natural key: `investment_account_id + transaction_date + amount + units`.
+- XIRR and CAGR are computed only for `instrument_type = mutual_fund` using these transaction records.
+DynamoDB key:
+```
+PK = USER#<user_id>
+SK = CASUPLOAD#<cas_upload_id>
+```
 
 ### Income and Expense Streams
 
@@ -94,7 +117,7 @@ Phase-1 instrument types:
 Mutual fund flow:
 
 - UI requires CAS upload first.
-- Backend parses fund names.
+- Backend parses fund names and stores them on the `cas_upload` record
 - User saves one selected fund as an investment account.
 - `source = cas_upload`
 - `current_corpus_source = cas_upload` or `transaction_derived`
@@ -118,11 +141,15 @@ Schema:
 
 - `transaction-schema.json`
 
-Used mostly for CAS-derived or imported investment transaction history.
+Used for CAS-derived or imported investment transaction history.
 
 Transactions remain linked to an investment account:
 
 - `investment_account_id`
+
+For mutual fund instruments, an `opening_balance` transaction is auto-generated from `current_corpus` and `start_date` on investment save. This ensures XIRR has a starting data point even before CAS transactions are available.
+
+XIRR and CAGR are computed only for `instrument_type = mutual_fund`. Other instrument types (EPF, FD, Savings Account) do not require transaction history for Phase-1 analytics.
 
 ### Goals
 
@@ -155,6 +182,8 @@ Phase-1 rule:
 
 `allocation_percentage` is therefore fixed to `100`.
 
+Enforcement rule: before writing any `GOALMAP` record, the backend must query `begins_with(SK, GOALMAP#<investment_id>#)` and reject if an active mapping already exists. Use `is_active = false` for soft-delete of removed mappings rather than hard delete.
+
 ### Portfolio Dashboard
 
 Schema:
@@ -175,13 +204,23 @@ Schemas:
 
 The Simulation page reads saved settings and stored monthly cashflow records. Users can override salary hike and expense YoY at the year level, then click Simulate.
 
+Each click of the Simulate button creates a new `simulation_run` record. All simulation runs are retained.
+
 The backend should:
 
-1. create a `simulation_run`
+1. Create a new `simulation_run` with `status = queued`.
+2. Run the projection engine.
 2. create or update yearly rows in `simulation-year-snapshot-schema.json`
+3. Write yearly rows to `simulation-year-snapshot-schema.json`.
 3. create or update month-wise records in `cashflow-month-schema.json`
+4. Write or update month-wise records in `cashflow-month-schema.json`.
+5. Update the `simulation_run` record with computed output fields and `status = completed`.
+
+Output fields on `simulation_run` (`projected_retirement_corpus`, `required_retirement_corpus`, `goal_funding_ratio`, `retirement_readiness_flag`, `opening_net_worth`) are nullable until the run completes. `status = completed` is the signal that these fields are populated.
 
 Month-level records are shown as drill-down rows but are not edited directly in Phase-1.
+
+Cashflow rows span the full retirement horizon on first settings save. Future phases may extend this to the user's full life expectancy horizon.
 
 ## DynamoDB Single Table Design
 
@@ -215,6 +254,7 @@ Sort keys:
 - `SK = GOALMAP#<investment_account_id>#<goal_id>`
 - `SK = CASHFLOW#<year>#<month>`
 - `SK = SIMRUN#<simulation_run_id>`
+- `SK = CASUPLOAD#<cas_upload_id>`
 
 This supports the main dashboard load with one query:
 
@@ -255,7 +295,7 @@ Useful for direct goal detail pages.
 - `GSI3PK = USER#<user_id>#SIMRUN`
 - `GSI3SK = GENERATED_AT#<generated_at>`
 
-Useful for loading the latest completed simulation quickly.
+Useful for loading the latest completed simulation quickly. Use `ScanIndexForward=false` and `Limit=1`.
 
 ## Entity Type Attribute
 
@@ -275,8 +315,35 @@ Suggested values:
 - `CASHFLOW_MONTH`
 - `SIMULATION_RUN`
 - `SIMULATION_YEAR_SNAPSHOT`
+- `CAS_UPLOAD`
 
-This makes mixed partition reads easier to filter in application code.
+## Active Phase-1 Schemas
+
+Finalized schema folder:
+
+- `src/schema/db/new_29042026`
+
+Active Phase-1 schemas:
+
+- `user-schema.json`
+- `user-settings-schema.json`
+- `income-stream-schema.json`
+- `expense-stream-schema.json`
+- `portfolio-schema.json`
+- `investment-account-schema.json`
+- `transaction-schema.json`
+- `goal-schema.json`
+- `goal-allocation-schema.json`
+- `cashflow-month-schema.json`
+- `simulation-run-schema.json`
+- `simulation-year-snapshot-schema.json`
+- `cas-upload-schema.json`
+
+Schemas prefixed with `NA_` are retained for later phases and are not active in Phase-1:
+
+- `NA_simulation-assumption-schema.json`
+- `NA_instrument-master-schema.json`
+- `NA_fund-underlying-snapshot-schema.json`
 
 ## Phase-1 Access Patterns
 
@@ -306,6 +373,30 @@ Read:
 - latest `SIMRUN#`
 
 ### Investment Screen
+
+### CAS Upload
+
+Write on upload:
+
+```
+PutItem PK=USER#<user_id>, SK=CASUPLOAD#<cas_upload_id>
+upload_status = pending
+```
+
+Update after parse:
+
+```
+UpdateItem upload_status = completed | failed
+parsed_fund_names = [...]
+parsed_transaction_count, inserted_transaction_count, duplicate_transaction_count
+parsed_at = <timestamp>
+```
+
+List all uploads for a user:
+```
+Query PK=USER#<user_id>
+begins_with(SK, CASUPLOAD#)
+```
 
 Read:
 
@@ -704,6 +795,7 @@ Not required while Phase-1 has one portfolio per user. Useful later if a user ca
 
 ## Notes
 
+- `cas-upload-schema.json` is active in Phase-1.
 - `income-stream-schema.json` and `expense-stream-schema.json` are active in Phase-1, with one generated salary stream and one generated household expense stream.
 - Files prefixed with `NA_` are intentionally not active in Phase-1.
 - `NA_simulation-assumption-schema.json` is retained for later scenario support. Phase-1 derives assumptions from `user-settings`, salary stream, and household expense stream.
